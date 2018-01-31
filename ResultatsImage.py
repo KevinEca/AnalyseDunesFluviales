@@ -1,6 +1,6 @@
 ﻿from tkinter import *
-from tkinter import filedialog, messagebox, ttk
-from PIL import Image, ImageTk
+from tkinter import ttk
+from PIL import ImageTk
 from scipy import array, shape
 
 class ResultatsImage(Frame):  

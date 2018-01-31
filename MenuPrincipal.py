@@ -24,7 +24,8 @@ class MenuPrincipal(Frame):
         
         self.path = "" # chemin indiquant où se trouve l'image sélectionnée
         self.image = Image # variable pour stocker en mémoire le tableau original de l'image (après passage en noir et blanc 8 bits)
-        self.ResolutionAltitude = 0 # La résolution de l'altitude de l'image → nombre de cm en altitude entre 2 niveaux de gris
+        self.AltitudeMin = 0 # L'altitude minimum de l'image
+        self.ResolutionAltitude = 0 # La résolution de l'altitude de l'image → différence d'altitude (cm) entre 2 niveaux de gris
         self.ImageAffiche = 0
         self.PrecedentChoixResolutionImage = "" # Sauvegarder le précédent choix dans la comboBox, pour éventuellement le remettre (si l'utilisateur annule sont nouveau choix de résolution d'affichage de l'image)
         
@@ -100,12 +101,16 @@ class MenuPrincipal(Frame):
             #                    on en prend le premier morceau "5,029" et on remplace la ',' par un '.' → conversion en float
             
             MotImage = ((self.path.split("/"))[-1]).split("_")
-            AltitudeMaximum = MotImage[-2].replace(',', '.')
-            AltitudeMinimun = (MotImage[-1].split("."))[0].replace(',', '.')
+            AltitudeMaximum = float(MotImage[-2].replace(',', '.'))
+            self.AltitudeMin = float((MotImage[-1].split("."))[0].replace(',', '.'))
             # la résolution de l'altitude 
             # nombre de mètre correspond à la différence d'altitude entre 2 niveaux de gris successif
-            # 256 niveaux de gris * 100 cm par mètre
-            self.ResolutionAltitude = str(round( (float(AltitudeMaximum) - float(AltitudeMinimun)) / 2.56, 2))
+            # 256 niveaux de gris 
+            self.ResolutionAltitude = round((AltitudeMaximum - self.AltitudeMin) / 256, 5)
+            
+            #print("Altitude Max = " + str(AltitudeMaximum))
+            #print("Altitude Min = " + str(self.AltitudeMin))
+            #print("Resolution image = " + str(self.ResolutionAltitude))
             
             # Si nous somme arrivé jusque ici, c'est que l'image est valide
             ImageValide = True
@@ -283,7 +288,7 @@ class MenuPrincipal(Frame):
             
         fenTraitementAxes = Toplevel()
         fenTraitementAxes.title("Résultats issus des axes - Analyse dunes 2018")
-        interface = ResultatsAxes.ResultatsAxes(fenTraitementAxes, self.image, self.MiniatureImage, self.SeuilDetectionDune.get(), self.ResolutionAltitude, self.CoordonneesPoints)
+        interface = ResultatsAxes.ResultatsAxes(fenTraitementAxes, self.image, self.MiniatureImage, self.SeuilDetectionDune.get(), self.AltitudeMin, self.ResolutionAltitude, self.CoordonneesPoints)
 
     def TraitementImage(self):
         fenTraitementImage = Toplevel()

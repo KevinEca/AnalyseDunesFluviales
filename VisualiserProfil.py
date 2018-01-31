@@ -20,9 +20,13 @@ class VisualiserProfil(Frame):
         Button(self, text="Export profil", command = lambda : self.ExportProfil()).grid(row=0, column=1)
         Label(self, text = "Nombre de dunes: " + str(NombreDunes) + "    Longeur d'onde moyenne: " + str(LongeurOndeMoyenne) + "m    Hauteur moyenne: " + str(HauteurMoyenne) + "cm").grid(row=1, column=0, columnspan = 2)
 
-        self.fig = plt.figure(figsize=(6, 4), dpi=96)
+        # Comment rendre dynamique affiche courbe ?
+        self.fig = plt.figure(figsize=(6, 4))
+        plt.xlabel('Distance (m)')
+        plt.ylabel('Altitude (m)')
+        plt.title('Vue de profil axe ' + str(self.NumeroAxe))
         ax = self.fig.add_subplot(111)
-        ax.plot(range(10), [5, 4, 2, 6, 9, 8, 7, 1, 2, 3])
+        ax.plot(CoordonneesProfilX, CoordonneesProfilY)
          
         graph = FigureCanvasTkAgg(self.fig, master=self)
         canvas = graph.get_tk_widget()

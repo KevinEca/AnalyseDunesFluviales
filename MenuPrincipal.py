@@ -288,12 +288,12 @@ class MenuPrincipal(Frame):
             
         fenTraitementAxes = Toplevel()
         fenTraitementAxes.title("Résultats issus des axes - Analyse dunes 2018")
-        interface = ResultatsAxes.ResultatsAxes(fenTraitementAxes, self.image, self.MiniatureImage, self.SeuilDetectionDune.get(), self.AltitudeMin, self.ResolutionAltitude, self.CoordonneesPoints)
+        ResultatsAxes.ResultatsAxes(fenTraitementAxes, self.image, self.MiniatureImage, self.SeuilDetectionDune.get(), self.AltitudeMin, self.ResolutionAltitude, self.CoordonneesPoints)
 
     def TraitementImage(self):
         fenTraitementImage = Toplevel()
         fenTraitementImage.title("Résultats image complète - Analyse dunes 2018")
-        interface = ResultatsImage.ResultatsImage(fenTraitementImage, self.image, self.MiniatureImage, self.SeuilDetectionDune.get(), self.ResolutionAltitude)
+        ResultatsImage.ResultatsImage(fenTraitementImage, self.image, self.MiniatureImage, self.SeuilDetectionDune.get(), self.ResolutionAltitude)
         
 fenetre = Tk()
 fenetre.title("Menu principal - Analyse dunes 2018")

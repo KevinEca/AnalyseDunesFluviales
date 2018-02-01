@@ -1,9 +1,9 @@
 ﻿from tkinter import *
-from tkinter import filedialog, messagebox, ttk
-from PIL import Image, ImageTk
+from tkinter import ttk
+from PIL import ImageTk
 from scipy import array, shape
 import VisualiserProfil
-from math import sqrt
+from math import sqrt, ceil
 from numpy import asmatrix
 
 ListeCouleurs = ["blue", "red", "sienna", "chartreuse", "darkgreen", "deepskyblue", "crimson", "darkorange", "yellow", "purple"]
@@ -16,11 +16,12 @@ class ResultatsAxes(Frame):
         
         self.ImageOrigine = asmatrix(ImageOriginal)
         self.ImageAffichage = ImageAffiche
-        self.DetectionDune = SeuilDetectionDune
+        self.DetectionDune = float(SeuilDetectionDune) / 100
         self.AltitudeMinimum = AltitudeMin
-        self.ResolutionImage = ResolutionNiveauGris
+        self.ResolutionImage = float(ResolutionNiveauGris)
         self.TableauCoordonneePoint = TableauPoints
         self.ImageAAfficher = 0 # variable ne pouvant être une variable locale, sinon l'image n'apparaît pas à l'affichage
+        self.NombreAxes = int(len(self.TableauCoordonneePoint) / 4)
         
         # Création de nos widgets
         Button(self, text="Export des résultats", command = lambda : self.ExportTXT()).grid(row=0, column=0)
@@ -28,12 +29,12 @@ class ResultatsAxes(Frame):
         Label(self, text="Numéro de l'axe choisi").grid(row=1, column=0)
         
         # Pour que le spinBox puisse fonctionner, il faut qu'il propose 2 valeurs au minimum
-        # On regarde donc si l'utilisateur a fait qu'un seul axe (4 coordonnées dans le tableau)
-        if (len(self.TableauCoordonneePoint) < 5):
+        # On regarde donc si l'utilisateur n'a fait qu'un seul axe
+        if (self.NombreAxes < 2):
             # Si c'est le cas, on désactive le spinBox, ainsi on force la valeur à 0
             self.NumeroAxeChoisi = Spinbox(self, from_=0, to=1, width = 10, state = 'disabled')
         else:
-            self.NumeroAxeChoisi = Spinbox(self, from_=0, to=int(len(self.TableauCoordonneePoint) / 4 - 1), width = 10, state = 'readonly')
+            self.NumeroAxeChoisi = Spinbox(self, from_=0, to= (self.NombreAxes - 1), width = 10, state = 'readonly')
         self.NumeroAxeChoisi.grid(row=1, column = 1)
 
         # On place une frame pour y placer notre treeview avec sa barre de défilement vertical
@@ -66,25 +67,25 @@ class ResultatsAxes(Frame):
         # On place les axes sur la miniatures, mais on les colorie d'une couleur différentes afin de les différencier
         self.PlacementAxes()
         
-        self.RemplirTableauResultats()
+        # On rempli le tableau des résultats par les données obtenues par analyse de tous les axes tracés par l'utilisateur
+        self.RemplirTableauResultats(self.DetectionDunes())
         
     def PlacementAxes(self):
-        NombreAxes = int(len(self.TableauCoordonneePoint) / 4)
-        for i in range (0, NombreAxes):
-            self.Canevas.create_line(self.TableauCoordonneePoint[4*i:4*(i + 1)], fill=ListeCouleurs[i])
+        for i in range (0, self.NombreAxes):
+            self.Canevas.create_line(self.TableauCoordonneePoint[4*i : 4*(i + 1)], fill=ListeCouleurs[i])
 
     def ExportTXT(self):
         pass
     
     def VisualiserProfil(self):
         AxeChoisi = int(self.NumeroAxeChoisi.get())
-        XCoordonnee, YCoordonnee = self.CoordonneeXYaxe(AxeChoisi)
+        XCoordonnee, YCoordonnee = self.TableauAltitudeDistance(AxeChoisi)
         
         fenVisualiseAxe = Toplevel()
         fenVisualiseAxe.title("Profil de l'axe " + str(AxeChoisi) + " - Analyse dunes 2018")
         VisualiserProfil.VisualiserProfil(fenVisualiseAxe, AxeChoisi, ListeCouleurs[AxeChoisi], XCoordonnee, YCoordonnee)
     
-    def CoordonneeXYaxe(self, NumeroAxe):
+    def TableauAltitudeDistance(self, NumeroAxe):
         # On prepare les listes des coordonnées X et Y (distance par rapport au point de départ et altitude respectivement)
         ListeDistance = []
         ListeAltitude = []
@@ -173,9 +174,86 @@ class ResultatsAxes(Frame):
         # On retourne les deux listes de données
         return ListeDistance, ListeAltitude
     
+    def DetectionDunesAxe(self, NumeroAxe, ListeDune = []):
+        # Le seuil de hauteur minimum pour qualifier de dune
+        # On ne peut pas directement exploiter la données renseignées par l'utilisateur du programme
+        # On utilise donc le plus petit multiple de la résolution de l'image qui puisse au moins faire la hauteur désignée
+        SeuilDetection = ceil(self.DetectionDune / self.ResolutionImage) * self.ResolutionImage
+        # On calcul la valeur de l'altitude maximum, celle qui signifie que l'on est en surface
+        AltitudeMax = self.AltitudeMinimum + self.ResolutionImage * 255
+        ListeDistance, ListeAltitude = self.TableauAltitudeDistance(NumeroAxe)
+        
+        IdDune = 0
+        
+        # indice de parcours des tableaux
+        i = 0
+        NombreElements = len(ListeAltitude)
+        PrecedenteValeur = 255
+        
+        # On enlève toutes les valeurs d'altitude maximal au debut (ne sont pas associé à des dunes, c'est du blanc → la surface)
+        while(ListeAltitude[i] == AltitudeMax and i < NombreElements):
+            i += 1
+            
+        #print(i)    # ici en tout cas c'est OK!!!!!!!!!!
+        
+        # On cherche ensuite à atteindre un minimum (qui sera le premier creux de la dune)
+        while(ListeAltitude[i] <= PrecedenteValeur and i < NombreElements):
+            PrecedenteValeur = ListeAltitude[i]
+            i += 1
+            
+        # Maintenant pour tout les autres données restantes du tableau
+        while (i < NombreElements):
+            
+            ProfondeurDune1 = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (la valeur mesuré diminue continuellement)
+            Distance1 = 0
+            
+            while(ListeAltitude[i] >= PrecedenteValeur and i < NombreElements):
+                Distance1 += 1
+                PrecedenteValeur = ListeAltitude[i]
+                i += 1
+            
+            # Si le pic de la dune possède le niveau d'altitude maximal, c'est que nous sommes en surface → ce n'est pas une dune !
+            if(ListeAltitude[i - 1] == AltitudeMax):
+                Distance1 = 0
+            
+            PicDune = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (la valeur mesuré augmente continuellement)
+            Distance2 = 0
+            
+            while(ListeAltitude[i] <= PrecedenteValeur and i < NombreElements):
+                Distance2 += 1
+                PrecedenteValeur = ListeAltitude[i]
+                i += 1
+            
+            ProfondeurDune2 = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (la valeur mesuré diminue continuellement)
+    
+            print("Distance1 = " + str(Distance1) + " Distance2 = " + str(Distance2))
+    
+            # Pour que l'on puisse juger si ce que l'on vient d'inspecter peut-être une dune, on peut déjà vérifier les distances mesurés
+            if(Distance1 != 0 and Distance2 != 0):
+                if(Distance1 < Distance2):
+                    HauteurDune = (PicDune - ProfondeurDune1) * self.ResolutionImage
+                elif(Distance2 < Distance1):
+                    HauteurDune = (PicDune - ProfondeurDune2) * self.ResolutionImage
+                else:
+                    HauteurDune = (PicDune - ((ProfondeurDune1 + ProfondeurDune2) / 2)) * self.ResolutionImage
+            
+                LongeurOnde = min(Distance1, Distance2)
+                
+                if(HauteurDune >= SeuilDetection):
+                    ListeDune.append(NumeroAxe, IdDune, HauteurDune, LongeurOnde)
+                    
+                return ListeDune
+            
+    def DetectionDunes(self):
+        ListeTouteDunes = []
+        for i in range (0, self.NombreAxes):
+            self.DetectionDunesAxe(i, ListeTouteDunes)
+                    
+        #ListeTouteDunes = array([[0,0,10,15],[0,1,2,4],[1,2,3,4]])    # valeur test pour des résultats sur 2 tracés
+        return ListeTouteDunes
+                                
     def RemplirTableauResultats(self, ResultatsDunesAxes = array([[0,0,0,0]])):
-        NombreAxes = int(len(self.TableauCoordonneePoint) / 4)
-        for i in range (0, NombreAxes):
+        for i in range (0, self.NombreAxes):
             self.Table.insert('', 'end', str(i), text='Axe ' + str(i), tags = ('Color' + str(i)))
             self.Table.tag_configure('Color' + str(i), background=ListeCouleurs[i])
         

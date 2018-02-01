@@ -20,13 +20,14 @@ class VisualiserProfil(Frame):
         Button(self, text="Export profil", command = lambda : self.ExportProfil()).grid(row=0, column=1)
         Label(self, text = "Nombre de dunes: " + str(NombreDunes) + "    Longeur d'onde moyenne: " + str(LongeurOndeMoyenne) + "m    Hauteur moyenne: " + str(HauteurMoyenne) + "cm").grid(row=1, column=0, columnspan = 2)
 
-        # Comment rendre dynamique affiche courbe ?
+        # Comment afficher correctement son graphique
+        # https://python4astronomers.github.io/plotting/advanced.html
         self.fig = plt.figure(figsize=(6, 4))
-        plt.xlabel('Distance (m)')
-        plt.ylabel('Altitude (m)')
-        plt.title('Vue de profil axe ' + str(self.NumeroAxe))
         ax = self.fig.add_subplot(111)
         ax.plot(CoordonneesProfilX, CoordonneesProfilY)
+        ax.set_xlabel("Distance (m)")
+        ax.set_ylabel("Altitude (m)")
+        ax.set_title("Vue de profil axe " + str(self.NumeroAxe))
          
         graph = FigureCanvasTkAgg(self.fig, master=self)
         canvas = graph.get_tk_widget()

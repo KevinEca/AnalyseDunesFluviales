@@ -191,13 +191,13 @@ class ResultatsAxes(Frame):
         PrecedenteValeur = 255
         
         # On enlève toutes les valeurs d'altitude maximal au debut (ne sont pas associé à des dunes, c'est du blanc → la surface)
-        while(ListeAltitude[i] == AltitudeMax and i < NombreElements):
+        while( i < NombreElements and ListeAltitude[i] == AltitudeMax):
             i += 1
             
         #print(i)    # ici en tout cas c'est OK!!!!!!!!!!
         
         # On cherche ensuite à atteindre un minimum (qui sera le premier creux de la dune)
-        while(ListeAltitude[i] <= PrecedenteValeur and i < NombreElements):
+        while(i < NombreElements and ListeAltitude[i] <= PrecedenteValeur):
             PrecedenteValeur = ListeAltitude[i]
             i += 1
             
@@ -207,7 +207,7 @@ class ResultatsAxes(Frame):
             ProfondeurDune1 = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (la valeur mesuré diminue continuellement)
             Distance1 = 0
             
-            while(ListeAltitude[i] >= PrecedenteValeur and i < NombreElements):
+            while(i < NombreElements and ListeAltitude[i] >= PrecedenteValeur):
                 Distance1 += 1
                 PrecedenteValeur = ListeAltitude[i]
                 i += 1
@@ -219,7 +219,7 @@ class ResultatsAxes(Frame):
             PicDune = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (la valeur mesuré augmente continuellement)
             Distance2 = 0
             
-            while(ListeAltitude[i] <= PrecedenteValeur and i < NombreElements):
+            while(i < NombreElements and ListeAltitude[i] <= PrecedenteValeur and i < NombreElements):
                 Distance2 += 1
                 PrecedenteValeur = ListeAltitude[i]
                 i += 1

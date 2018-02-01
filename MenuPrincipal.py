@@ -16,8 +16,7 @@ if os.name == 'nt':
 
 class MenuPrincipal(Frame):
     
-    def __init__(self, fenetre
-                 ):
+    def __init__(self, fenetre):
 
         Frame.__init__(self, fenetre)
         self.pack(fill=BOTH)
@@ -175,7 +174,8 @@ class MenuPrincipal(Frame):
             # On récupère la position du point que l'on va placer sur le canevas
             PositionXPoint = event.x
             PositionYPoint = event.y
-            print("X = " + str(PositionXPoint) + " Y = " + str(PositionYPoint))
+            #print("X = " + str(PositionXPoint) + " Y = " + str(PositionYPoint))
+            
             # On rajoute le point sur le canevas
             self.DessinPoint.append(self.Canevas.create_oval(PositionXPoint, PositionYPoint, PositionXPoint+1, PositionYPoint+1, fill="red"))
             # on garde en mémoire les coordonnées du points

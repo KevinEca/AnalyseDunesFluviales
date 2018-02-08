@@ -32,14 +32,17 @@ class VisualiserProfil(Frame):
         self.ax.set_xlabel("Distance (m)")
         self.ax.set_ylabel("Altitude (m)")
         self.ax.set_title("Vue de profil axe " + str(self.NumeroAxe))
+        
+        # On change les valeurs min/max pour la légende du graphique afin d'éviter d'occuper de la place pour des valeurs qui ne sont pas atteinte (comme 0m d'altitude par exemple)
+        self.ax.set_ylim(min(CoordonneesProfilY) - 0.3, max(CoordonneesProfilY) + 0.3)
          
         # On affiche le graphe matplotlib, et on le praramètre pour que ces dimensions s'adaptent à la taille de la fenêtre
         graph = FigureCanvasTkAgg(self.fig, master=self)
         graph.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
         
         # On prépare de quoi faire les lignes horizonale/verticale pour cibler la valeur du graphe que l'on cible avec le curseur de la souris
-        self.lx = self.ax.axhline(color='k')  # the horiz line
-        self.ly = self.ax.axvline(color='k')  # the vert line
+        self.lx = self.ax.axhline(color='k', linewidth = 1)  # the horiz line
+        self.ly = self.ax.axvline(color='k', linewidth = 1)  # the vert line
         # Localisation du texte qui affichera les valeurs numériques du point ciblé
         self.txt = self.ax.text(0.7, 0.9, '', transform=self.ax.transAxes)
         

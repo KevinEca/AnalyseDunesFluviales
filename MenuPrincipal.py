@@ -61,7 +61,7 @@ class MenuPrincipal(Frame):
         
         Label(self, text="Résolution maximum d'affichage de l'image").grid(row=0, column=4)
         
-        self.ChoixResolutionImage = ttk.Combobox(self)
+        self.ChoixResolutionImage = ttk.Combobox(self, state="readonly")
         self.ChoixResolutionImage['values'] = ("854 x 480", "1280 x 720", "1920 x 1080", "Natives")
         self.PrecedentChoixResolutionImage = "1280 x 720"
         self.ChoixResolutionImage.set(self.PrecedentChoixResolutionImage)
@@ -75,6 +75,8 @@ class MenuPrincipal(Frame):
         self.Canevas.bind("<Button-1>", self.PlacementPoint)
         self.Canevas.grid(row=1, column=4, rowspan = 6, columnspan = 2)        
         
+    # Comme il y a des bugs avec la librairie Pillow, les images TIFF utilisant la compression lzw ne sont pas corectement prises en charge
+    # https://www.bountysource.com/issues/51811624-image-save-as-tiff-image-and-the-compression-parameter-does-not-work
     def ChargerImage(self):
         # On ouvre une boite de dialogue où l'utilisateur va choisir son image
         self.path = filedialog.askopenfilename(title="Ouvrir une image",filetypes=[('tif','.tif'),('jpg','.jpg'),('bmp','.bmp'),('all files','.*')]) 
@@ -116,15 +118,18 @@ class MenuPrincipal(Frame):
                 
         except (ValueError, IndexError) :
             messagebox.showerror("Erreur", """L'image ouverte en paramètre ne respecte pas la convention de nommage pour utiliser le programme.
-    Les niveaux d'altitude minimum et maximum (m) doivent être indiqués dans le nom de l'image séparé par le caractère '_'.        
-    Exemples de noms valides :
-    A_5,284_9,21.tif
-    Exemple_-3,1_-8,867.tif
-    Projet_de_PRD_4,26_-8,141.tif""")
+Les niveaux d'altitude minimum et maximum (m) doivent être indiqués dans le nom de l'image séparé par le caractère '_'.        
+Exemples de noms valides :
+A_5,284_9,21.tif
+Exemple_-3,1_-8,867.tif
+Projet_de_PRD_4,26_-8,141.tif""")
             
         return ImageValide
     
-    def AffichageImage(self):        
+    def AffichageImage(self):
+        
+        #self.lab['text'] = str(self.winfo_screenwidth()) + " " + str(self.winfo_screenheight())
+           
         # Il faut définir la variable au préalable (et par défaut à false, pour correspondre à la logique émise)
         ChoixPoursuivre = False
         
@@ -134,8 +139,8 @@ class MenuPrincipal(Frame):
         # (bien évidemment, il n'est pas possible d'ajouter des points si aucune image est affichée)
         if len(self.DessinPoint) > 0:
             ChoixPoursuivre = messagebox.askquestion("Attention", """Au moins un point est placé sur l'image actuelle
-    Poursuivre entrainerai leur suppression.
-    Voulez-vous poursuivre ?""")
+Poursuivre entrainerai leur suppression.
+Voulez-vous poursuivre ?""")
             
             # Si l'utilisateur a demandé de poursuivre, on supprime alors les points et tracés (axes) établis
             if ChoixPoursuivre == 'yes' :
@@ -218,7 +223,6 @@ class MenuPrincipal(Frame):
     puis cliquer sur ce même bouton""")
             
     def SupprimerDernierAxeOuPoint(self):
-        
         if (len(self.path) > 0):
             # Si il y a pas de point seul placé et au moins un axe de tracé → on supprime le dernier tracé
             if (len(self.DessinPoint) % 2 == 0 and self.NombreLignes > 0):

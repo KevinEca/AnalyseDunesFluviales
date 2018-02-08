@@ -239,6 +239,8 @@ class ResultatsAxes(Frame):
             
                 LongeurOnde = min(Distance1, Distance2)
                 
+                print("Hauteur dune = " + str(HauteurDune) + " Longueur d'onde = " + str(LongeurOnde))
+                
                 if(HauteurDune >= SeuilDetection):
                     ListeDune.append(NumeroAxe, IdDune, HauteurDune, LongeurOnde)
                     

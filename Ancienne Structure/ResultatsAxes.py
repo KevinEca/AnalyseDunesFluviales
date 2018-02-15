@@ -231,18 +231,21 @@ class ResultatsAxes(Frame):
             # Pour que l'on puisse juger si ce que l'on vient d'inspecter peut-être une dune, on peut déjà vérifier les distances mesurés
             if(Distance1 != 0 and Distance2 != 0):
                 if(Distance1 < Distance2):
-                    HauteurDune = (PicDune - ProfondeurDune1) * self.ResolutionImage
+                    HauteurDune = PicDune - ProfondeurDune1
                 elif(Distance2 < Distance1):
-                    HauteurDune = (PicDune - ProfondeurDune2) * self.ResolutionImage
+                    HauteurDune = PicDune - ProfondeurDune2
                 else:
-                    HauteurDune = (PicDune - ((ProfondeurDune1 + ProfondeurDune2) / 2)) * self.ResolutionImage
+                    HauteurDune = PicDune - ((ProfondeurDune1 + ProfondeurDune2) / 2)
             
                 LongeurOnde = min(Distance1, Distance2)
                 
+                print("ResolutionImage = " + str(self.ResolutionImage))
+                print("HautPic = " + str(PicDune) + " ProfondeurDune1 = " + str(ProfondeurDune1) + " ProfondeurDune2 = " + str(ProfondeurDune2))
                 print("Hauteur dune = " + str(HauteurDune) + " Longueur d'onde = " + str(LongeurOnde))
                 
                 if(HauteurDune >= SeuilDetection):
-                    ListeDune.append(NumeroAxe, IdDune, HauteurDune, LongeurOnde)
+                    # * 100 pour mettre en cm
+                    ListeDune.append([NumeroAxe, IdDune, LongeurOnde, round(HauteurDune * 100, 2)])
                     
                 return ListeDune
             

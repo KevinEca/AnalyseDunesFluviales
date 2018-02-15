@@ -70,7 +70,7 @@ class VisualiserProfil(Frame):
         self.lx.set_ydata(y)
         self.ly.set_xdata(x)
 
-        self.txt.set_text('x=%1.2f, y=%1.2f' % (x, y))
+        self.txt.set_text('Distance = %1.2f, Profondeur = %1.2f' % (x, y))
         self.fig.canvas.draw()
         
     def ExportProfil(self):

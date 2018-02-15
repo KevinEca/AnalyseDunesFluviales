@@ -244,9 +244,9 @@ Voulez-vous poursuivre ?""")
     
             # Si un point a été placé sans qu'il soit utilisé par un tracé → on supprime le point en question
             elif (len(self.DessinPoint) % 2):
-                self.Canevas.after(1000, self.Canevas.delete, self.DessinPoint[2 * self.NombreLignes])
+                self.Canevas.after(1000, self.Canevas.delete, self.DessinPoint[-1])
                 del self.CoordonneesPoints[-2:]
-                del self.DessinPoint[-1:]
+                del self.DessinPoint[-1]
                 
             # si il n'y a plus de point placé par l'utilisateur → désactiver le bouton
             if(len(self.DessinPoint) == 0):

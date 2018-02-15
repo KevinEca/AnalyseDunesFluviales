@@ -3,14 +3,14 @@ from scipy import array
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from numpy import searchsorted
+from PIL.ImageOps import expand
 
 ListeCouleurs = ["blue", "red", "sienna", "chartreuse", "darkgreen", "deepskyblue", "crimson", "darkorange", "yellow", "purple"]
 
 class VisualiserProfil(Frame):  
 
     def __init__(self, fenetre, NumeroAxe = 0, CouleurAssocie = 'black', CoordonneesProfilX = array([0]), CoordonneesProfilY = array([0]), NombreDunes = 0, LongeurOndeMoyenne = 0, HauteurMoyenne = 0):
-        Frame.__init__(self, fenetre)
-        self.pack(fill = BOTH)
+        self.window = fenetre
         
         self.CoordonneesProfilX = CoordonneesProfilX
         self.CoordonneesProfilY = CoordonneesProfilY
@@ -20,10 +20,14 @@ class VisualiserProfil(Frame):
         self.MaxX = max(self.CoordonneesProfilX)
         
         # Création de nos widgets
-        Label(self, text="Profil dunes axe " + str(self.NumeroAxe), font=("Courier", 20), fg = CouleurAssocie).pack(side=TOP, expand=1)
-        Button(self, text="Export profil", command = lambda : self.ExportProfil(), height = 1, width = 25).pack(side=TOP, expand=1)
-        Label(self, text = "Nombre de dunes: " + str(NombreDunes) + "    Longeur d'onde moyenne: " + str(LongeurOndeMoyenne) + "m    Hauteur moyenne: " + str(HauteurMoyenne) + "cm").pack(side=TOP, expand=1)
+        Label(fenetre, text="Profil dunes axe " + str(self.NumeroAxe), font=("Courier", 20), fg = CouleurAssocie).pack(side=TOP)
+        Button(fenetre, text="Export profil", command = lambda : self.ExportProfil(), height = 1, width = 25).pack(side=TOP)
+        Label(fenetre, text = "Nombre de dunes: " + str(NombreDunes) + "    Longeur d'onde moyenne: " + str(LongeurOndeMoyenne) + "m    Hauteur moyenne: " + str(HauteurMoyenne) + "cm").pack(side=TOP)
 
+
+        MaFrame = Frame(fenetre)
+        MaFrame.pack(side=TOP, fill = BOTH, expand = 1)
+        
         # Comment afficher correctement son graphique
         # https://python4astronomers.github.io/plotting/advanced.html
         self.fig = plt.figure(figsize=(6, 4))
@@ -37,7 +41,7 @@ class VisualiserProfil(Frame):
         self.ax.set_ylim(min(CoordonneesProfilY) - 0.3, max(CoordonneesProfilY) + 0.3)
          
         # On affiche le graphe matplotlib, et on le praramètre pour que ces dimensions s'adaptent à la taille de la fenêtre
-        graph = FigureCanvasTkAgg(self.fig, master=self)
+        graph = FigureCanvasTkAgg(self.fig, master=MaFrame)
         graph.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
         
         # On prépare de quoi faire les lignes horizonale/verticale pour cibler la valeur du graphe que l'on cible avec le curseur de la souris

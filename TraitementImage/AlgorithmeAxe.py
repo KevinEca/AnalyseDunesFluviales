@@ -55,7 +55,7 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, LesAxes = None, ImageAff
             # On regarde si l'on doit prendre le pixel de la ligne suivante ou non 
             # Exemples : 
             # PositionY = 8,1 et IncrementVertical = 0.3 → on obtient 8,4, ce nombre est plus proche de 8 que de 9 donc on va prendre le pixel sur la 8ème colonne
-            # PositionY = 8,4 et IncrementVertical = 0.4 → on obtient 8,8, ce qui est plus proche de 9, d'où le faite que l'on prend le pixel sur la 9ème colonne
+            # PositionY = 8,4 et IncrementVertical = 0.4 → on obtient 8,8, ce qui est plus proche de 9, d'oà¹ le faite que l'on prend le pixel sur la 9ème colonne
             PixelVerticalChoisi = int(PositionY)
             if(PositionY + IncrementVertical) > (PixelVerticalChoisi + 0.5):
                 PixelVerticalChoisi += 1
@@ -98,6 +98,8 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, LesAxes = None, ImageAff
 def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage = [0], SeuilDetectionDune = 0, ListeDune = []):
     AltitudeMinimum = MonImage.getAltitudeMin()
     ResolutionImage = float(MonImage.getResolutionAltitude())
+    
+    #print("ResolutionImage = " + str(ResolutionImage))
         
     # Le seuil de hauteur minimum pour qualifier de dune
     # On ne peut pas directement exploiter la données renseignées par l'utilisateur du programme
@@ -141,14 +143,12 @@ def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage
         PicDune = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (la valeur mesuré augmente continuellement)
         Distance2 = 0
             
-        while(i < NombreElements and ListeAltitude[i] <= PrecedenteValeur and i < NombreElements):
+        while(i < NombreElements and ListeAltitude[i] <= PrecedenteValeur):
             Distance2 += 1
             PrecedenteValeur = ListeAltitude[i]
             i += 1
             
         ProfondeurDune2 = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (la valeur mesuré diminue continuellement)
-    
-        print("Distance1 = " + str(Distance1) + " Distance2 = " + str(Distance2))
     
         # Pour que l'on puisse juger si ce que l'on vient d'inspecter peut-être une dune, on peut déjà vérifier les distances mesurés
         if(Distance1 != 0 and Distance2 != 0):
@@ -160,16 +160,17 @@ def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage
                 HauteurDune = PicDune - ((ProfondeurDune1 + ProfondeurDune2) / 2)
             
             LongeurOnde = min(Distance1, Distance2)
-                
-            print("ResolutionImage = " + str(ResolutionImage))
-            print("HautPic = " + str(PicDune) + " ProfondeurDune1 = " + str(ProfondeurDune1) + " ProfondeurDune2 = " + str(ProfondeurDune2))
-            print("Hauteur dune = " + str(HauteurDune) + " Longueur d'onde = " + str(LongeurOnde))
+            
+            #print("Distance1 = " + str(Distance1) + " Distance2 = " + str(Distance2))
+            #print("HautPic = " + str(PicDune) + " ProfondeurDune1 = " + str(ProfondeurDune1) + " ProfondeurDune2 = " + str(ProfondeurDune2))
+            #print("Hauteur dune = " + str(HauteurDune) + " Longueur d'onde = " + str(LongeurOnde))
                 
             if(HauteurDune >= SeuilDetection):
                 # * 100 pour mettre en cm
                 ListeDune.append([NumeroAxe, IdDune, LongeurOnde, round(HauteurDune * 100, 2)])
+                IdDune += 1 # On incrémente l'identifiant de la dune
                     
-            return ListeDune
+    return ListeDune
             
 def DetectionDunes(MonImage = None, LesAxes = None, ImageAffichage = [0], SeuilDetectionDune = 0, ListeDune = []):
     ListeTouteDunes = []

@@ -23,7 +23,7 @@ class ResultatsAxes(Frame):
         FrameMenu.pack(side=LEFT, fill = BOTH, expand = 1)
         
         # Création de nos widgets (à placer dans la moitié gauche de la fenêtre)
-        Button(FrameMenu, text="Export de tous les résultats", command = lambda : self.ExportTXT()).pack(side=TOP)
+        Button(FrameMenu, text="Export de tous les résultats", command = lambda : self.ExportTxt()).pack(side=TOP)
         
         # On crée une nouvelle sous-frame afn de pouvoir placer les 4 éléments graphique suivant sous forme d'un table 2*2 emplacements
         FrameChoixAxe = Frame(FrameMenu)
@@ -38,7 +38,7 @@ class ResultatsAxes(Frame):
         else:
             self.NumeroAxeChoisi = Spinbox(FrameChoixAxe, from_=0, to= (self.NombreAxes - 1), width = 10, state = 'readonly')
         self.NumeroAxeChoisi.grid(row=0, column=1)
-        Button(FrameChoixAxe, text="Export résultats axe", command = lambda : self.ExportTXTAxe()).grid(row=1, column=0)
+        Button(FrameChoixAxe, text="Export résultats axe", command = lambda : self.ExportTxtAxe()).grid(row=1, column=0)
         Button(FrameChoixAxe, text="Visualisation profil axe", command = lambda : self.VisualiserProfil()).grid(row=1, column=1)
 
         # On place une frame pour y placer notre treeview (gauche) avec sa barre de défilement vertical (droite)
@@ -82,11 +82,12 @@ class ResultatsAxes(Frame):
         for i in range (0, self.NombreAxes):
             self.Canevas.create_line(self.LesAxes.CoordonneesAxe(i), fill=ListeCouleurs[i])
 
-    def ExportTXT(self):
-        pass
+    def ExportTxt(self):
+        ExportTXT.ExportResultatsDunes(self.TableauAnalyseImageAxe, self.MonImage, self.LesAxes, self.BilanDunesAxe)
     
     def ExportTxtAxe(self):
-        ExportTXT.ExportResultatsDunes(self.TableauAnalyseImageAxe, self.MonImage.getNomImage())
+        AxeChoisi = int(self.NumeroAxeChoisi.get())
+        ExportTXT.ExportResultatsDunesAxe(self.TableauAnalyseImageAxe, self.MonImage, AxeChoisi, self.LesAxes.InfosAxe(AxeChoisi).getCoordonneAxe(), self.BilanDunesAxe[AxeChoisi])
     
     def VisualiserProfil(self):
         AxeChoisi = int(self.NumeroAxeChoisi.get())

@@ -5,7 +5,7 @@ class ImageDune():
     
     def __init__(self):
         
-        self.Path = "" # chemin indiquant oÃ¹ se trouve l'image sélectionnée
+        self.Path = "" # chemin indiquant où se trouve l'image sélectionnée
         self.NomImage = "" # contient le nom de l'image (qui sera reprit comme indication pour les exports TXT d'informations des dunes trouvées)
         self.Image = Image # variable pour stocker en mémoire le tableau original de l'image (après passage en noir et blanc 8 bits)
         self.AltitudeMin = 0 # L'altitude minimum de l'image

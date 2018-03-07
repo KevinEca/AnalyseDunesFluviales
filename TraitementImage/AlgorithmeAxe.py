@@ -206,7 +206,7 @@ def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage
                 
             if(HauteurDune >= SeuilDetection):
                 # * 100 pour mettre en cm
-                ListeDune.append([NumeroAxe, IdDune, LongeurOnde, round(HauteurDune * 100, 2)])
+                ListeDune.append([NumeroAxe, IdDune, LongeurOnde, round(HauteurDune * 100, 2), round(ProfondeurDune1,2), round(PicDune,2), round(ProfondeurDune2,2)])
                 IdDune += 1 # On incrémente l'identifiant de la dune
                     
     return ListeDune
@@ -251,7 +251,6 @@ def BilanDunesParAxe(ListeDesDunes = [], NombreAxes = 1):
 def DetectionDunes(MonImage = None, LesAxes = None, ImageAffichage = [0], SeuilDetectionDune = 0):
     ListeTouteDunes = []
     for i in range (0, LesAxes.NombreAxes()):
-        print(LesAxes.InfosAxe(i).getCoordonneAxe())
         DetectionDunesAxe(i, MonImage, LesAxes, ImageAffichage, SeuilDetectionDune, ListeTouteDunes)
                     
     #ListeTouteDunes = array([[0,0,10,15],[0,1,2,4],[1,2,3,4]])    # valeur test pour des résultats sur 2 tracés

@@ -3,7 +3,6 @@ from scipy import array
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from numpy import searchsorted
-from PIL.ImageOps import expand
 
 ListeCouleurs = ["blue", "red", "sienna", "chartreuse", "darkgreen", "deepskyblue", "crimson", "darkorange", "yellow", "purple"]
 

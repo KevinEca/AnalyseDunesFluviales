@@ -8,8 +8,6 @@ from TraitementImage import ImageDune
 class ResultatsImage(Frame):  
 
     def __init__(self, fenetre, MonImage = None, ImageAffiche = [0], SeuilDetectionDune = 0):
-        Frame.__init__(self, fenetre)
-        self.pack(fill=BOTH)
         
         self.ImageOrigine = asmatrix(MonImage.getImage())
         self.ImageAffichage = ImageAffiche
@@ -18,18 +16,22 @@ class ResultatsImage(Frame):
         self.ResolutionImage = float(MonImage.getResolutionAltitude())
         self.ImageAAfficher = 0 # variable ne pouvant être une variable locale, sinon l'image n'apparaît pas à l'affichage
         
+        # Création d'une sous frame pour placer correctement les divers éléments sur la moitié gauche de la fenêtre
+        FrameMenu = Frame(fenetre)
+        FrameMenu.pack(side=LEFT, fill = BOTH, expand = 1)
+        
         # Création de nos widgets
-        Button(self, text='Export des résultats', command = lambda : self.ExportTXT()).grid(row=0, column=0, columnspan = 1)
+        Button(FrameMenu, text='Export des résultats', command = lambda : self.ExportTXT()).pack(side=TOP)
 
-        self.FrameTable = Frame(self, height=255, width = 255, bd=1, relief=SUNKEN)
-        self.FrameTable.grid(row=1, column=0)
+        self.FrameTable = Frame(FrameMenu, height=255, width = 255, bd=1, relief=SUNKEN)
+        self.FrameTable.pack(side=TOP, fill = BOTH, expand = 1)
         
         self.Table = ttk.Treeview(self.FrameTable, columns=('Nombre', 'LongOnde', 'HautDune'))
         self.VerticalBarreTable = ttk.Scrollbar(self.FrameTable, orient="vertical", command=self.Table.yview)
         self.Table.configure(yscrollcommand=self.VerticalBarreTable.set)
         
         self.Table['show'] = 'headings' # On utilise pas la colonne avec les + (on ne l'affiche pas)
-        self.Table.pack(side=LEFT)
+        self.Table.pack(side=LEFT, fill = BOTH, expand = 1)
         self.VerticalBarreTable.pack(side=RIGHT, fill = Y)
         
         self.Table.column('Nombre', width=100, anchor='center')
@@ -39,11 +41,11 @@ class ResultatsImage(Frame):
         self.Table.column('HautDune', width=140, anchor='center')
         self.Table.heading('HautDune', text="Hauteur dune (cm)")
         
-        self.Canevas = Canvas(self)
+        self.Canevas = Canvas(fenetre)
         self.ImageAAfficher = ImageTk.PhotoImage(self.ImageAffichage)
         self.Canevas.create_image(0,0,anchor=NW,image = self.ImageAAfficher)
         self.Canevas.config(width=self.ImageAffichage.size[0], height=self.ImageAffichage.size[1])
-        self.Canevas.grid(row=0, column=1, rowspan = 2)
+        self.Canevas.pack(side=RIGHT)
         
         self.RemplirTableauResultats()
 

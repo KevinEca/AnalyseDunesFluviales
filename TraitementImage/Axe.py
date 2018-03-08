@@ -13,11 +13,17 @@ class Axe():
     def getPointDepart(self):
         return self.PointDepart
     
+    def getCoordonnePointDepart(self):
+        return self.PointDepart.getCoordonnees()
+    
     def getPointArrive(self):
         return self.PointArrive
     
+    def getCoordonnePointArrive(self):
+        return self.PointArrive.getCoordonnees()
+    
     def getCoordonneAxe(self):
-        return self.PointDepart.getCoordonnees(), self.PointArrive.getCoordonnees()
+        return self.getCoordonnePointDepart(), self.getCoordonnePointArrive()
     
     def VecteurXaxe(self):
         return self.PointArrive.getXpoint() - self.PointDepart.getXpoint()

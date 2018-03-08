@@ -1,4 +1,5 @@
-﻿from tkinter import filedialog, messagebox
+﻿import datetime
+from tkinter import filedialog, messagebox
 
 def ExportResultatsDunesAxe(TableauInfoDunes = [0,0,0,0,0,0,0], Image = None, NumeroAxe = 0, CoordonneesAxe = None, DonneesBilanAxe = [0,0,0,0]):
     NombreDeDunesTotal = len(TableauInfoDunes)
@@ -7,6 +8,7 @@ def ExportResultatsDunesAxe(TableauInfoDunes = [0,0,0,0,0,0,0], Image = None, Nu
     if (NombreDeDunesTotal > 0):
         IdAxe = TableauInfoDunes[j][0] # On commence par lire les dunes faisant partie de celles qui sont rattachées au premier axe ayant au moins une dune
                 
+        #Tant que nous sommes pas sur une dune de l'axe choisi on passe à la dune suivante
         while(IdAxe != NumeroAxe and j < NombreDeDunesTotal):
             j += 1
             if (j < NombreDeDunesTotal): # Si nous avons pas atteint la fin du tableau (on incrémente j néanmoins pour sortir du while)
@@ -18,12 +20,13 @@ def ExportResultatsDunesAxe(TableauInfoDunes = [0,0,0,0,0,0,0], Image = None, Nu
             f = filedialog.asksaveasfilename(defaultextension='.txt',filetypes = (("Texte","*.txt"),("CSV","*.csv*")))
             if f:
                 with open(f, "w") as fic:
-                    print(f"""Traitement analyse dunes de l'image " {Image.getNomImage()} " 
+                    print(f"""Traitement analyse dunes de l'image " {Image.getNomImage()} " fait le {datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
 Altitude minimum = {Image.getAltitudeMin()} Résolution altitude = {Image.getResolutionAltitude()}
-Numero axe choisi {NumeroAxe} constitué des pixels aux extrémités {CoordonneesAxe}
+Numéro axe choisi {NumeroAxe} constitué des pixels aux extrémités {CoordonneesAxe}
 Nombre de dunes = {DonneesBilanAxe[1]} | Longeur d'onde moyenne = {DonneesBilanAxe[2]}m | Hauteur moyenne {DonneesBilanAxe[3]}cm
 IdDune;Longeur d'onde(m);Hauteur(cm);AltitudeCreux1(m);AltitudePic(m);AltitudeCreux2(m)""", file = fic)
                         
+                    # Pour chacune des dunes de l'axe voulu
                     while(IdAxe == NumeroAxe and j < NombreDeDunesTotal):
                         print(f"{TableauInfoDunes[j][1]};{TableauInfoDunes[j][2]};{TableauInfoDunes[j][3]};{TableauInfoDunes[j][4]};{TableauInfoDunes[j][5]};{TableauInfoDunes[j][6]}", file = fic)
                         j += 1
@@ -44,14 +47,17 @@ def ExportResultatsDunes(TableauInfoDunes = [0,0,0,0,0,0], Image = None, Axes = 
         f = filedialog.asksaveasfilename(defaultextension='.txt',filetypes = (("Texte","*.txt"),("CSV","*.csv*")))
         if f:
             with open(f, "w") as fic:
-                print(f"""Traitement analyse dunes de l'image " {Image.getNomImage()} " 
+                # Entête du fichier
+                print(f"""Traitement analyse dunes de l'image " {Image.getNomImage()} " fait le {datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
 Altitude minimum = {Image.getAltitudeMin()} Résolution altitude = {Image.getResolutionAltitude()}""", file = fic)
             
+                # On affiche les informations générales pour chacun des axes
                 NombreAxe = len(DonneesBilanAxe)
                 for i in range (0, NombreAxe):
-                    print(f"""Numero axe {i} constitué des pixels aux extrémités {Axes.InfosAxe(i).getCoordonneAxe()}
+                    print(f"""Numéro axe {i} constitué des pixels aux extrémités {Axes.InfosAxe(i).getCoordonneAxe()}
 Nombre de dunes = {DonneesBilanAxe[i][1]} | Longeur d'onde moyenne = {DonneesBilanAxe[i][2]}m | Hauteur moyenne {DonneesBilanAxe[i][3]}cm""", file = fic)
                 
+                # La légende pour comprendre la structure des informations listés pour chacune des dunes
                 print(f"""IdAxe;IdDune;Longeur d'onde(m);Hauteur(cm);AltitudeCreux1(m);AltitudePic(m);AltitudeCreux2(m)""", file = fic)
                 
                 while(j < NombreDeDunesTotal):

@@ -21,12 +21,12 @@ class GestionAxes():
         
     # cette méthode est utilisé pour connaître les coordonnees du dernier point que l'utilisateur a placé pour effectuer une duplication d'axe (donc forcement un axe qui ne possède pas de point d'arrivée)
     def PositionDernierPointDepart(self):
-        return self.ListAxes[self.NombreAxes() - 1].getPointDepart().getCoordonnees();
+        return self.ListAxes[self.NombreAxes() - 1].getCoordonnePointDepart();
         
     def NombreAxes(self):
         return len(self.ListAxes)
     
-    # méthode permettant de savoir si le derier axe dans la liste est complet (un point de départ ET surtout d'arrivé sont défini)
+    # méthode permettant de savoir si le dernier axe dans la liste est complet (les points de départ ET surtout d'arrivés sont définis)
     def DernierAxeComplet(self):
         EstIlComplet = True
         # Si le point d'arrivé du dernier axe n'existe pas, c'est qu'il n'est pas complet
@@ -46,17 +46,20 @@ class GestionAxes():
     def VecteurAxe(self, NumeroAxe):
         return self.ListAxes[NumeroAxe].VecteurAxe();
     
-    # Attention ici on met un -2 !
-    # le décalage de 1 (la numérotation commence à 0) + le faite d'un axe non terminé (un seul des point est placé) est considéré tout de même comme un axe
-    # Hors le vecteur ne peux se déterminer que sur un axe complet → -2
     def VecteurDernierAxe(self):
-        return self.VecteurAxe(self.NombreAxes() - 2)
+        if(self.DernierAxeComplet()):
+            return self.VecteurAxe(self.NombreAxes() - 1)
+        else:
+            # Attention ici on met un -2 !
+            # le décalage de 1 (la numérotation commence à 0) + le faite d'un axe non terminé (un seul des point est placé) est considéré tout de même comme un axe (dans le nombre d'axes)
+            # Hors le vecteur ne peux se déterminer que sur un axe complet → -2
+            return self.VecteurAxe(self.NombreAxes() - 2)
     
-    def SupprimerAxes(self, NumeroAxe):
+    def SupprimerAxe(self, NumeroAxe):
         del self.ListAxes[NumeroAxe]
         
     def SupprimerDernierAxe(self):
-        self.SupprimerAxes(self.NombreAxes() - 1)
+        self.SupprimerAxe(self.NombreAxes() - 1)
         
     def SupprimerTousAxes(self):
         del self.ListAxes[:]

@@ -113,43 +113,6 @@ class MenuPrincipal(Frame):
             self.AffichageImage()
             # On rend possible le bouton pour le traitement sur l'image
             self.BoutonTraitementImage['state'] = 'normal'
-        
-    def VerifierImage(self):
-        # par défaut on suppose que l'image ne correspond pas aux contraintes nécessaires pour effectuer un traitement de l'image
-        ImageValide = False
-    
-        try:
-            # exemple de nom d'image Exemple_8,508_5,029.tif
-            # on découpe donc par le caractère "_"
-            # Altitude maximum : on en prend l'avant dernier morceau et on remplace la ',' par un '.' → conversion en float
-            # Altitude minimum : on prend le dernier morceau, 
-            #                    on le coupe par le caractère '.' pour enlever le '.tiff'
-            #                    on en prend le premier morceau "5,029" et on remplace la ',' par un '.' → conversion en float
-            
-            MotImage = ((self.path.split("/"))[-1]).split("_")
-            AltitudeMaximum = float(MotImage[-2].replace(',', '.'))
-            self.AltitudeMin = float((MotImage[-1].split("."))[0].replace(',', '.'))
-            # la résolution de l'altitude 
-            # nombre de mètre correspond à  la différence d'altitude entre 2 niveaux de gris successif
-            # 256 niveaux de gris 
-            self.ResolutionAltitude = round((AltitudeMaximum - self.AltitudeMin) / 256, 5)
-            
-            #print("Altitude Max = " + str(AltitudeMaximum))
-            #print("Altitude Min = " + str(self.AltitudeMin))
-            #print("Resolution image = " + str(self.ResolutionAltitude))
-            
-            # Si nous somme arrivé jusque ici, c'est que l'image est valide
-            ImageValide = True
-                
-        except (ValueError, IndexError) :
-            messagebox.showerror("Erreur", """L'image ouverte en paramètre ne respecte pas la convention de nommage pour utiliser le programme.
-Les niveaux d'altitude minimum et maximum (m) doivent être indiqués dans le nom de l'image séparé par le caractère '_'.        
-Exemples de noms valides :
-A_5,284_9,21.tif
-Exemple_-3,1_-8,867.tif
-Projet_de_PRD_4,26_-8,141.tif""")
-            
-        return ImageValide
     
     def AffichageImage(self):
         
@@ -203,8 +166,9 @@ Voulez-vous poursuivre ?""")
     def PlacementPoint(self, event):    
         # Si une image valide est référencée
         if self.MonImage.PathValide():
-            # On peux tracer 10 axes au maximum (pour garantir une couleur différente lors du traitement sur les axes 
-            if(self.LesAxes.NombreAxes() > 9):
+            # On peux tracer 10 axes au maximum (pour garantir une couleur différente lors du traitement sur les axes
+            #On regarde donc si on en a plus de 9 et que le dernier (le dixième) est complets
+            if(self.LesAxes.NombreAxes() > 9 and self.LesAxes.DernierAxeComplet()):
                 messagebox.showerror("Erreur", "10 Tracés au maximum (limite atteinte).")
                 return
                 
@@ -212,6 +176,14 @@ Voulez-vous poursuivre ?""")
             PositionXPoint = event.x
             PositionYPoint = event.y
             #print("X = " + str(PositionXPoint) + " Y = " + str(PositionYPoint))
+            
+            # Si le point que l'on s'apprête a ajouter est le deuxième d'un axe, et qu'il se trouve au même endroit que le premier
+            # Alors on empêche la création de ce point
+            if (self.LesAxes.NombreAxes() > 0 and not self.LesAxes.DernierAxeComplet()):
+                CoordonneePremierPoint = self.LesAxes.PositionDernierPointDepart();
+                if(CoordonneePremierPoint[0] == PositionXPoint and CoordonneePremierPoint[1] == PositionYPoint):
+                    messagebox.showerror("Erreur", "Les 2 points de l'axe sont placés au même endroit")
+                    return
             
             # On rajoute le point sur le canevas
             self.DessinPoint.append(self.Canevas.create_oval(PositionXPoint, PositionYPoint, PositionXPoint+1, PositionYPoint+1, fill="red"))

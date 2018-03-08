@@ -167,7 +167,7 @@ def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage
     # Maintenant pour tout les autres données restantes du tableau
     while (i < NombreElements):
             
-        ProfondeurDune1 = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (la valeur mesuré diminue continuellement)
+        ProfondeurDune1 = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (du while au dessus consistant à obtenir des valeurs toujours plus petite)
         Distance1 = 0
             
         while(i < NombreElements and ListeAltitude[i] >= PrecedenteValeur):

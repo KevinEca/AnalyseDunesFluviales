@@ -166,7 +166,7 @@ Voulez-vous poursuivre ?""")
     def PlacementPoint(self, event):    
         # Si une image valide est référencée
         if self.MonImage.PathValide():
-            # On peux tracer 10 axes au maximum (pour garantir une couleur différente lors du traitement sur les axes
+            # On peux tracer 10 axes au maximum (pour garantir une couleur différente lors du traitement sur les axes)
             #On regarde donc si on en a plus de 9 et que le dernier (le dixième) est complets
             if(self.LesAxes.NombreAxes() > 9 and self.LesAxes.DernierAxeComplet()):
                 messagebox.showerror("Erreur", "10 Tracés au maximum (limite atteinte).")

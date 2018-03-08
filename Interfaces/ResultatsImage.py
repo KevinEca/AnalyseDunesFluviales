@@ -3,17 +3,15 @@ from tkinter import ttk
 from PIL import ImageTk
 from scipy import array, shape
 from numpy import asmatrix
-from TraitementImage import ImageDune
+from TraitementImage import ImageDune, AlgorithmeImageComplete, ExportTXT
 
 class ResultatsImage(Frame):  
 
     def __init__(self, fenetre, MonImage = None, ImageAffiche = [0], SeuilDetectionDune = 0):
         
-        self.ImageOrigine = asmatrix(MonImage.getImage())
+        self.MonImage = MonImage
         self.ImageAffichage = ImageAffiche
         self.DetectionDune = SeuilDetectionDune
-        self.AltitudeMinimum = MonImage.AltitudeMin
-        self.ResolutionImage = float(MonImage.getResolutionAltitude())
         self.ImageAAfficher = 0 # variable ne pouvant être une variable locale, sinon l'image n'apparaît pas à l'affichage
         
         # Création d'une sous frame pour placer correctement les divers éléments sur la moitié gauche de la fenêtre
@@ -21,7 +19,7 @@ class ResultatsImage(Frame):
         FrameMenu.pack(side=LEFT, fill = BOTH, expand = 1)
         
         # Création de nos widgets
-        Button(FrameMenu, text='Export des résultats', command = lambda : self.ExportTXT()).pack(side=TOP)
+        Button(FrameMenu, text='Export des résultats', command = lambda : self.ExportTxt()).pack(side=TOP)
 
         self.FrameTable = Frame(FrameMenu, height=255, width = 255, bd=1, relief=SUNKEN)
         self.FrameTable.pack(side=TOP, fill = BOTH, expand = 1)
@@ -48,9 +46,13 @@ class ResultatsImage(Frame):
         self.Canevas.pack(side=RIGHT)
         
         self.RemplirTableauResultats()
+        self.TableauAnalyseImage = [0,0,0,0,0]
+        self.BilanDunesImage = [0,0,0]
+        
+        AlgorithmeImageComplete.FiltrageLaplacien(MonImage)
 
-    def ExportTXT(self):
-        pass
+    def ExportTxt(self):
+        ExportTXT.ExportResultatsDunes(self.TableauAnalyseImage, self.MonImage, self.BilanDunesImage)
     
     def RemplirTableauResultats(self, ResultatsDunes = array([[0,0,0]])):
         NombreDunes = shape(ResultatsDunes)[0]

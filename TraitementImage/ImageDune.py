@@ -66,8 +66,8 @@ class ImageDune():
             
             self.NomImage = (self.Path.split("/"))[-1]
             DecoupeNomImage = self.NomImage.split("_")
-            AltitudeMaximum = float(DecoupeNomImage[-2].replace(',', '.'))
-            self.AltitudeMin = float((DecoupeNomImage[-1].split("."))[0].replace(',', '.'))
+            self.AltitudeMin = float(DecoupeNomImage[-2].replace(',', '.'))
+            AltitudeMaximum = float((DecoupeNomImage[-1].split("."))[0].replace(',', '.'))
             # la résolution de l'altitude 
             # nombre de mètre correspond Ã  la différence d'altitude entre 2 niveaux de gris successif
             # 256 niveaux de gris → on divise par 255 la différence entre le min et le max (la 256ème valeur étant le min + 0 * ResolutionAltitude)

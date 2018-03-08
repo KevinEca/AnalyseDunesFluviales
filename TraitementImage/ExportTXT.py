@@ -37,7 +37,7 @@ IdDune;Longeur d'onde(m);Hauteur(cm);AltitudeCreux1(m);AltitudePic(m);AltitudeCr
     else:
         messagebox.showerror("Erreur", "Aucune dune n'a été trouvé")
 
-def ExportResultatsDunes(TableauInfoDunes = [0,0,0,0,0,0], Image = None, Axes = None, DonneesBilanAxe = [0,0,0,0]):
+def ExportResultatsDunesAxes(TableauInfoDunes = [0,0,0,0,0,0], Image = None, Axes = None, DonneesBilanAxe = [0,0,0,0]):
     NombreDeDunesTotal = len(TableauInfoDunes)
     j = 0 # Indice de la dune que l'on lit dans le tableau
         
@@ -66,3 +66,22 @@ Nombre de dunes = {DonneesBilanAxe[i][1]} | Longeur d'onde moyenne = {DonneesBil
     else:
         messagebox.showerror("Erreur", "Aucune dune n'a été trouvé")          
                 
+def ExportResultatsDunes(TableauInfoDunes = [0,0,0,0,0], Image = None, DonneesBilanImage = [0,0,0]):
+    NombreDeDunesTotal = len(TableauInfoDunes)
+    j = 0 # Indice de la dune que l'on lit dans le tableau
+        
+    if (NombreDeDunesTotal > 0):
+        f = filedialog.asksaveasfilename(defaultextension='.txt',filetypes = (("Texte","*.txt"),("CSV","*.csv*")))
+        if f:
+            with open(f, "w") as fic:
+                # Entête du fichier
+                print(f"""Traitement analyse dunes de l'image " {Image.getNomImage()} " fait le {datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
+Altitude minimum = {Image.getAltitudeMin()} Résolution altitude = {Image.getResolutionAltitude()}
+Analyse de l'image complète : nombre de dunes {DonneesBilanImage[0]} | Longueur d'onde moyenne = {DonneesBilanImage[1]} | Hauteur moyenne = {DonneesBilanImage[2]}
+IdDune;Longeur d'onde(m);Hauteur(cm);AltitudeCreux1(m);AltitudePic(m);AltitudeCreux2(m)""", file = fic)
+
+                while(j < NombreDeDunesTotal):
+                    print(f"{DonneesBilanImage[j][0]};{DonneesBilanImage[j][1]};{DonneesBilanImage[j][2]};{DonneesBilanImage[j][3]};{DonneesBilanImage[j][4]};{DonneesBilanImage[j][5]}", file = fic)
+                    j += 1
+    else:
+        messagebox.showerror("Erreur", "Aucune dune n'a été trouvé")

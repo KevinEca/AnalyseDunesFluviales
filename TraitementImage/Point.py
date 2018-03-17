@@ -2,16 +2,16 @@ class Point():
     
     def __init__(self, Xpoint, Ypoint):
         
-        self.CoordonneX = Xpoint
-        self.CoordonneY = Ypoint
+        self.CoordonneeX = Xpoint
+        self.CoordonneeY = Ypoint
             
     def getXpoint(self):
-        return self.CoordonneX
+        return self.CoordonneeX
     
     def getYpoint(self):
-        return self.CoordonneY
+        return self.CoordonneeY
             
     def getCoordonnees(self):
-        return self.CoordonneX, self.CoordonneY
+        return self.CoordonneeX, self.CoordonneeY
         
         

@@ -2,28 +2,28 @@ from TraitementImage import Point
 
 class Axe():
     
-    def __init__(self, Xpoint1, Ypoint1):
+    def __init__(self, XpointDepart, YpointDepart):
         
-        self.PointDepart = Point.Point(Xpoint1, Ypoint1)
+        self.PointDepart = Point.Point(XpointDepart, YpointDepart)
         self.PointArrive = None
         
-    def AjoutPointArrive(self, Xpoint2, Ypoint2):
-        self.PointArrive = Point.Point(Xpoint2, Ypoint2)
+    def AjoutPointArrive(self, Xpoint, Ypoint):
+        self.PointArrive = Point.Point(Xpoint, Ypoint)
             
     def getPointDepart(self):
         return self.PointDepart
     
-    def getCoordonnePointDepart(self):
+    def getCoordonneesPointDepart(self):
         return self.PointDepart.getCoordonnees()
     
     def getPointArrive(self):
         return self.PointArrive
     
-    def getCoordonnePointArrive(self):
+    def getCoordonneesPointArrive(self):
         return self.PointArrive.getCoordonnees()
     
-    def getCoordonneAxe(self):
-        return self.getCoordonnePointDepart(), self.getCoordonnePointArrive()
+    def getCoordonneesAxe(self):
+        return self.getCoordonneesPointDepart(), self.getCoordonneesPointArrive()
     
     def VecteurXaxe(self):
         return self.PointArrive.getXpoint() - self.PointDepart.getXpoint()

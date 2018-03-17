@@ -16,3 +16,21 @@ Si par contre on exploite la même image mais utilisant une plage de gris sur 16
  - Pour la même image nous arrivons donc avec une précision maximum atteignable (si l'acquisition des données est assez précise pour bien évidemment) de 12,4 -1,95 / 65 535 = 0,000159 m → soit 0.16mm !
  
 Problème : Le programme génère bien des images .TIF en 16 bits (ou 8 bits si besoin au choix), mais les images obtenues ne sont pas compréhensibles par Pillow, bibliothèque pour afficher les images sur une interface en codée en Python.
+
+Pour fonctionner le projet utilise Python 3.6 (développé avec la 3.6.4) et les librairies suivantes :
+Matplotlib v2.2.0 (faire les graphiques de vue de profil)
+Numpy v1.14.2 (utilisé pour faire des opérations sur des matrices / calculs scientifique)
+Scipy v1.0.0 (idem que Numpy)
+Pillow v5.0.0 (permet de manipuler plus de formats d'image que celle supporté par Tkinter, dont les images TIF)
+
+Commande pour mettre à jour une bibliothèque python
+python -m pip install --upgrade "nom de la bibliothèque"
+
+Les interfaces créées n'utilise pas Qt (vu trop tard, librairie lourde pour n'apporter rien de plus) 
+Néanmoins pour utiliser QT afin de créer les interfaces il faut les librairies pyqt5 et pyqt5_tools
+Tutoriel comment obtenir les interfaces en python à partir du designer Qt https://www.codementor.io/deepaksingh04/design-simple-dialog-using-pyqt5-designer-tool-ajskrd09n
+pour installer pyqt5, il faut passe par l'inviter de commande avec "pip install pyqt5"
+
+Les installateurs à la racine de ce projet permettent d'installer python + les librairies en hors ligne, néanmoins comme les librairies sont lourdes, seules les scripts sont ici
+Les fichiers des librairie (.whl) sont disponible sur le site pypi, comme par exemple avec pillow
+https://pypi.python.org/pypi/Pillow/5.0.0

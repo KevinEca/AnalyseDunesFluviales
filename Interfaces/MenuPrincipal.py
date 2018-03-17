@@ -137,7 +137,7 @@ Voulez-vous poursuivre ?""")
                 # Comme nous annulons la suppression des points, on réaffiche la résolution de référence dans la comboBox
                 self.ChoixResolutionImage.set(self.PrecedentChoixResolutionImage)
         
-        if len(self.MonImage.getPath()) > 0 and len(self.DessinPoint) == 0 :
+        if len(self.MonImage.getCheminImage()) > 0 and len(self.DessinPoint) == 0 :
             
             # On récupère la taille voulue (maximal) pour l'affichage de l'image
             LargeurMaxAffiche, HauteurMaxAffiche = self.DimensionMaxChoisi()
@@ -165,7 +165,7 @@ Voulez-vous poursuivre ?""")
     
     def PlacementPoint(self, event):    
         # Si une image valide est référencée
-        if self.MonImage.PathValide():
+        if self.MonImage.CheminValide():
             # On peux tracer 10 axes au maximum (pour garantir une couleur différente lors du traitement sur les axes)
             #On regarde donc si on en a plus de 9 et que le dernier (le dixième) est complets
             if(self.LesAxes.NombreAxes() > 9 and self.LesAxes.DernierAxeComplet()):

@@ -18,13 +18,15 @@ Si par contre on exploite la même image mais utilisant une plage de gris sur 16
 Problème : Le programme génère bien des images .TIF en 16 bits (ou 8 bits si besoin au choix), mais les images obtenues ne sont pas compréhensibles par Pillow, bibliothèque pour afficher les images sur une interface en codée en Python.
 
 Pour fonctionner le projet utilise Python 3.6 (développé avec la 3.6.4) et les librairies suivantes :
-Matplotlib v2.2.0 (faire les graphiques de vue de profil)
-Numpy v1.14.2 (utilisé pour faire des opérations sur des matrices / calculs scientifique)
-Scipy v1.0.0 (idem que Numpy)
-Pillow v5.0.0 (permet de manipuler plus de formats d'image que celle supporté par Tkinter, dont les images TIF)
+ - Matplotlib v2.2.2 (faire les graphiques de vue de profil) https://pypi.python.org/pypi/matplotlib
+ - Numpy v1.14.2 (utilisé pour faire des opérations sur des matrices / calculs scientifique) https://pypi.python.org/pypi/numpy
+ - Scipy v1.0.0 (idem que Numpy) https://pypi.python.org/pypi/scipy
+ - Pillow v5.0.0 (permet de manipuler plus de formats d'image que celle supporté par Tkinter, dont les images TIF) https://pypi.python.org/pypi/Pillow/5.0.0
 
 Commande pour mettre à jour une bibliothèque python
 python -m pip install --upgrade "nom de la bibliothèque"
+
+Le projet étant basé sur du code Python, l'édition de ses fichiers peuvent se faire depuis un simle éditeur de texte, mais aussi par un IDE comme PyCharm ou Eclipse (avec le plugin PyDev).
 
 Les interfaces créées n'utilise pas Qt (vu trop tard, librairie lourde pour n'apporter rien de plus) 
 Néanmoins pour utiliser QT afin de créer les interfaces il faut les librairies pyqt5 et pyqt5_tools
@@ -33,4 +35,4 @@ pour installer pyqt5, il faut passe par l'inviter de commande avec "pip install 
 
 Les installateurs à la racine de ce projet permettent d'installer python + les librairies en hors ligne, néanmoins comme les librairies sont lourdes, seules les scripts sont ici
 Les fichiers des librairie (.whl) sont disponible sur le site pypi, comme par exemple avec pillow
-https://pypi.python.org/pypi/Pillow/5.0.0
+https://pypi.python.org/pypi

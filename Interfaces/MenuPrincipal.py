@@ -162,6 +162,9 @@ Voulez-vous poursuivre ?""")
             self.MonImage.setSensCourant(True)
         else:
             self.MonImage.setSensCourant(False)
+            
+    def AjoutPointAffichage(self, PositionX, PositionY):
+        self.DessinPoint.append(self.Canevas.create_oval(PositionX-1, PositionY-1, PositionX+1, PositionY+1, fill="red"))
     
     def PlacementPoint(self, event):    
         # Si une image valide est référencée
@@ -186,7 +189,7 @@ Voulez-vous poursuivre ?""")
                     return
             
             # On rajoute le point sur le canevas
-            self.DessinPoint.append(self.Canevas.create_oval(PositionXPoint, PositionYPoint, PositionXPoint+1, PositionYPoint+1, fill="red"))
+            self.AjoutPointAffichage(PositionXPoint, PositionYPoint)
             # on garde en mémoire les coordonnées du points
             self.LesAxes.AjouterPoint(PositionXPoint, PositionYPoint)
             # On permet de supprimer le dernier élément
@@ -223,7 +226,7 @@ Voulez-vous poursuivre ?""")
                     messagebox.showerror("Erreur", """Le deuxième point serai en dehors de l'image""")
                 else:
                     # On place maintenant le deuxième point, ainsi que le tracé les reliant
-                    self.DessinPoint.append(self.Canevas.create_oval(NouveauPointX, NouveauPointY, NouveauPointX+1, NouveauPointY+1, fill="red"))
+                    self.AjoutPointAffichage(NouveauPointX, NouveauPointY)
                     self.LesAxes.AjouterPoint(NouveauPointX, NouveauPointY)
                     self.DessinLigne.append(self.Canevas.create_line(self.LesAxes.CoordonneesDernierAxe(), fill="red"))
         else :

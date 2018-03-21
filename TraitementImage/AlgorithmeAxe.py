@@ -45,7 +45,7 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, LesAxes = None, ImageAff
     DistanceX = abs(PointArrive[0] - PointDepart[0])
     DistanceY = abs(PointArrive[1] - PointDepart[1])
     
-    if(DistanceX >= DistanceY):
+    if(DistanceX >= DistanceY):       
         # Notre point de référence (ici vertical) correspond à l'initialisation à la position verticale du point de départ
         PositionYReference = PointDepart[1]
         # C'est deux variables sont pour définir le premier et dernier pixels horizontales pour la boucle (initialisation et condition de sortie)
@@ -168,45 +168,49 @@ def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage
     while (i < NombreElements):
             
         ProfondeurDune1 = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (du while au dessus consistant à obtenir des valeurs toujours plus petite)
-        Distance1 = 0
+        Dist1 = ListeDistance[i - 1] # Connaître à quelle distance (par rapport au début de l'axe) se trouve le premier creux de la dune
             
         while(i < NombreElements and ListeAltitude[i] >= PrecedenteValeur):
-            Distance1 += 1
             PrecedenteValeur = ListeAltitude[i]
             i += 1
             
-        # Si le pic de la dune possède le niveau d'altitude maximal, c'est que nous sommes en surface → ce n'est pas une dune !
-        if(ListeAltitude[i - 1] == AltitudeMax):
-            Distance1 = 0
-            
         PicDune = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (la valeur mesuré augmente continuellement)
-        Distance2 = 0
+        DistPic = ListeDistance[i - 1] # La distance où se trouve le pic
             
+        # Si le pic de la dune possède le niveau d'altitude maximal, c'est que nous sommes en surface → ce n'est pas une dune ! 
+        if(ListeAltitude[i - 1] == AltitudeMax):
+            DistPic = -1 # On met la distance à -1 pour signaler que c'est pas une dune
+        
+        
         while(i < NombreElements and ListeAltitude[i] <= PrecedenteValeur):
-            Distance2 += 1
             PrecedenteValeur = ListeAltitude[i]
             i += 1
             
         ProfondeurDune2 = ListeAltitude[i - 1]  # 'i - 1' car à l'indice 'i' on ne respecte plus la condition (la valeur mesuré diminue continuellement)
+        Dist2 = ListeDistance[i - 1] # La distance où se trouve le 2ème creux
     
+        # On calcule les distance entre les creux (1/2) et le pic de la dune
+        Dist1 = DistPic - Dist1
+        Dist2 -= DistPic # Dist2 = Dist2 - DistPic
+        
         # Pour que l'on puisse juger si ce que l'on vient d'inspecter peut-être une dune, on peut déjà vérifier les distances mesurés
-        if(Distance1 != 0 and Distance2 != 0):
-            if(Distance1 < Distance2):
+        if(Dist1 != 1):
+            if(Dist1 < Dist2): # si le 1er creux est plus proche du pic que le 2ème creux
                 HauteurDune = PicDune - ProfondeurDune1
-            elif(Distance2 < Distance1):
+            elif(Dist1 > Dist2):
                 HauteurDune = PicDune - ProfondeurDune2
             else:
                 HauteurDune = PicDune - ((ProfondeurDune1 + ProfondeurDune2) / 2)
             
-            LongeurOnde = min(Distance1, Distance2)
+            LongeurOnde = min(Dist1, Dist2)
             
-            #print("Distance1 = " + str(Distance1) + " Distance2 = " + str(Distance2))
+            #print("Distance1 = " + str(Dist1) + " Distance2 = " + str(Dist2))
             #print("HautPic = " + str(PicDune) + " ProfondeurDune1 = " + str(ProfondeurDune1) + " ProfondeurDune2 = " + str(ProfondeurDune2))
             #print("Hauteur dune = " + str(HauteurDune) + " Longueur d'onde = " + str(LongeurOnde))
                 
             if(HauteurDune >= SeuilDetection):
                 # * 100 pour mettre en cm
-                ListeDune.append([NumeroAxe, IdDune, LongeurOnde, round(HauteurDune * 100, 2), round(ProfondeurDune1,2), round(PicDune,2), round(ProfondeurDune2,2)])
+                ListeDune.append([NumeroAxe, IdDune, round(LongeurOnde,2), round(HauteurDune * 100, 2), round(ProfondeurDune1,2), round(PicDune,2), round(ProfondeurDune2,2)])
                 IdDune += 1 # On incrémente l'identifiant de la dune
                     
     return ListeDune

@@ -218,10 +218,14 @@ Voulez-vous poursuivre ?""")
                 PointDepart = self.LesAxes.PositionDernierPointDepart()
                 NouveauPointX = PointDepart[0] + VecteurAncienAxe[0]
                 NouveauPointY = PointDepart[1] + VecteurAncienAxe[1]
-                # On place maintenant le deuxième point, ainsi que le tracé les reliant
-                self.DessinPoint.append(self.Canevas.create_oval(NouveauPointX, NouveauPointY, NouveauPointX+1, NouveauPointY+1, fill="red"))
-                self.LesAxes.AjouterPoint(NouveauPointX, NouveauPointY)
-                self.DessinLigne.append(self.Canevas.create_line(self.LesAxes.CoordonneesDernierAxe(), fill="red"))
+                # On regarde si le 2ème point de l'axe ne sera pas en dehors de l'image
+                if(NouveauPointX < 0 or NouveauPointX > self.MonImage.getLargeurImage() or NouveauPointY < 0 or NouveauPointY > self.MonImage.getHauteurImage()):
+                    messagebox.showerror("Erreur", """Le deuxième point serai en dehors de l'image""")
+                else:
+                    # On place maintenant le deuxième point, ainsi que le tracé les reliant
+                    self.DessinPoint.append(self.Canevas.create_oval(NouveauPointX, NouveauPointY, NouveauPointX+1, NouveauPointY+1, fill="red"))
+                    self.LesAxes.AjouterPoint(NouveauPointX, NouveauPointY)
+                    self.DessinLigne.append(self.Canevas.create_line(self.LesAxes.CoordonneesDernierAxe(), fill="red"))
         else :
             messagebox.showerror("Information", """Placer le premier point d'abord
     puis cliquer sur ce même bouton""")

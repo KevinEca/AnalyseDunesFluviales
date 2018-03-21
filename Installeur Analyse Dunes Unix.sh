@@ -16,7 +16,7 @@ pip install numpy-1.14.2-cp36-cp36m-manylinux1_x86_64.whl
 echo "3. Installation Scipy"
 pip install scipy-1.0.0-cp36-cp36m-manylinux1_x86_64.whl
 echo "4. Installation Matplotlib"
-pip install matplotlib-2.2.0-cp36-cp36m-manylinux1_x86_64.whl
+pip install matplotlib-2.2.2-cp36-cp36m-manylinux1_x86_64.whl
 echo "5. Installation Pillow"
 pip install Pillow-5.0.0-cp36-cp36m-manylinux1_x86_64.whl
 

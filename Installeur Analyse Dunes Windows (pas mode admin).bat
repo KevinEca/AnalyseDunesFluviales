@@ -4,7 +4,7 @@ SET PIP_INSTALL=python -m pip install
 SET PACKAGE_PATH=./
 SET NUMPY_PATH=%PACKAGE_PATH%numpy-1.14.2-cp36-none-win_amd64.whl
 SET SCIPY_PATH=%PACKAGE_PATH%scipy-1.0.0-cp36-cp36m-win_amd64.whl
-SET MATPLOTLIB_PATH=%PACKAGE_PATH%matplotlib-2.2.0-cp36-cp36m-win_amd64.whl
+SET MATPLOTLIB_PATH=%PACKAGE_PATH%matplotlib-2.2.2-cp36-cp36m-win_amd64.whl
 SET PILLOW_PATH=%PACKAGE_PATH%Pillow-5.0.0-cp36-cp36m-win_amd64.whl
 
 :START_POINT
@@ -19,6 +19,8 @@ GOTO :START_POINT
 echo Version de python installe
 python --version
 echo ------ Installons maintenant les packages -------
+echo Les packages sont numpy 1.14.2, scipy 1.0.0, matplotlib 2.2.2 et Pillow 5.0.0
+echo Ils peuvent etre telecharges sur https://pypi.python.org/pypi et doivent etre dans le meme repertoire que cette installateur
 echo 1. Mise a jour pip (web)
 %PIP_INSTALL% --upgrade pip
 echo 2. Installation Numpy (wheel)

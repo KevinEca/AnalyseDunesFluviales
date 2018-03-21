@@ -165,6 +165,9 @@ Voulez-vous poursuivre ?""")
             
     def AjoutPointAffichage(self, PositionX, PositionY):
         self.DessinPoint.append(self.Canevas.create_oval(PositionX-1, PositionY-1, PositionX+1, PositionY+1, fill="red"))
+        
+    def AjoutLigneAffichage(self):
+        self.DessinLigne.append(self.Canevas.create_line(self.LesAxes.CoordonneesDernierAxe(), fill="red"))
     
     def PlacementPoint(self, event):    
         # Si une image valide est référencée
@@ -185,7 +188,8 @@ Voulez-vous poursuivre ?""")
             if (self.LesAxes.NombreAxes() > 0 and not self.LesAxes.DernierAxeComplet()):
                 CoordonneePremierPoint = self.LesAxes.PositionDernierPointDepart();
                 if(CoordonneePremierPoint[0] == PositionXPoint and CoordonneePremierPoint[1] == PositionYPoint):
-                    messagebox.showerror("Erreur", "Les 2 points de l'axe sont placés au même endroit")
+                    messagebox.showerror("Erreur", """Les 2 points de l'axe sont placés au même endroit.
+Impossible de créer un axe dont la longueur est nulle.""")
                     return
             
             # On rajoute le point sur le canevas
@@ -198,7 +202,7 @@ Voulez-vous poursuivre ?""")
             # Si on vient d'ajouter le deuxième point pour le tracé d'un axe
             if self.LesAxes.DernierAxeComplet():
                 # On trace la ligne entre les deux points tracés (avec la couleur rouge)                
-                self.DessinLigne.append(self.Canevas.create_line(self.LesAxes.CoordonneesDernierAxe(), fill="red"))
+                self.AjoutLigneAffichage()
                 
                 # On rend actif le bouton de traitement sur les axes (et de duplication des axes)
                 self.BoutonTraitementAxes['state'] = 'normal'
@@ -223,15 +227,15 @@ Voulez-vous poursuivre ?""")
                 NouveauPointY = PointDepart[1] + VecteurAncienAxe[1]
                 # On regarde si le 2ème point de l'axe ne sera pas en dehors de l'image
                 if(NouveauPointX < 0 or NouveauPointX > self.MonImage.getLargeurImage() or NouveauPointY < 0 or NouveauPointY > self.MonImage.getHauteurImage()):
-                    messagebox.showerror("Erreur", """Le deuxième point serai en dehors de l'image""")
+                    messagebox.showerror("Erreur", """Le deuxième point serait en dehors de l'image""")
                 else:
                     # On place maintenant le deuxième point, ainsi que le tracé les reliant
                     self.AjoutPointAffichage(NouveauPointX, NouveauPointY)
                     self.LesAxes.AjouterPoint(NouveauPointX, NouveauPointY)
-                    self.DessinLigne.append(self.Canevas.create_line(self.LesAxes.CoordonneesDernierAxe(), fill="red"))
+                    self.AjoutLigneAffichage()
         else :
             messagebox.showerror("Information", """Placer le premier point d'abord
-    puis cliquer sur ce même bouton""")
+puis cliquer sur ce même bouton""")
             
     def SupprimerDernierAxeOuPoint(self):
         # Si tous les axes sont complet (pas de point tout seul → on supprime le dernier tracé (la ligne et les 2 points)

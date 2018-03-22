@@ -54,7 +54,7 @@ Altitude minimum = {Image.getAltitudeMin()} Résolution altitude = {Image.getRes
                 # On affiche les informations générales pour chacun des axes
                 NombreAxe = len(DonneesBilanAxe)
                 for i in range (0, NombreAxe):
-                    print(f"""Numéro axe {i} constitué des pixels aux extrémités {Axes.InfosAxe(i).getCoordonneAxe()}
+                    print(f"""Numéro axe {i} constitué des pixels aux extrémités {Axes.InfosAxe(i).getCoordonneesAxe()}
 Nombre de dunes = {DonneesBilanAxe[i][1]} | Longeur d'onde moyenne = {DonneesBilanAxe[i][2]}m | Hauteur moyenne {DonneesBilanAxe[i][3]}cm""", file = fic)
                 
                 # La légende pour comprendre la structure des informations listés pour chacune des dunes

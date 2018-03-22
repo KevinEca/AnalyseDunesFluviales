@@ -194,7 +194,7 @@ def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage
         Dist2 -= DistPic # Dist2 = Dist2 - DistPic
         
         # Pour que l'on puisse juger si ce que l'on vient d'inspecter peut-être une dune, on peut déjà vérifier les distances mesurés
-        if(Dist1 != 1):
+        if(DistPic != -1):
             if(Dist1 < Dist2): # si le 1er creux est plus proche du pic que le 2ème creux
                 HauteurDune = PicDune - ProfondeurDune1
             elif(Dist1 > Dist2):

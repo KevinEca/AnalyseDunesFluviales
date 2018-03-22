@@ -28,7 +28,7 @@ IF NOT EXIST %PYTHON_INSTALL% (
 
 echo Le repertoire d'installation doit etre "C:\Python36"
 python-3.6.4-amd64.exe
-GOTO :Demarrage
+GOTO :Install_Package
 
 :Install_Package
 echo Version de python installe

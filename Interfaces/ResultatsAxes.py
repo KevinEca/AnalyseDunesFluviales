@@ -87,7 +87,7 @@ class ResultatsAxes(Frame):
     
     def ExportTxtAxe(self):
         AxeChoisi = int(self.NumeroAxeChoisi.get())
-        ExportTXT.ExportResultatsDunesAxe(self.TableauAnalyseImageAxe, self.MonImage, AxeChoisi, self.LesAxes.InfosAxe(AxeChoisi).getCoordonneAxe(), self.BilanDunesAxe[AxeChoisi])
+        ExportTXT.ExportResultatsDunesAxe(self.TableauAnalyseImageAxe, self.MonImage, AxeChoisi, self.LesAxes.InfosAxe(AxeChoisi).getCoordonneesAxe(), self.BilanDunesAxe[AxeChoisi])
     
     def VisualiserProfil(self):
         AxeChoisi = int(self.NumeroAxeChoisi.get())

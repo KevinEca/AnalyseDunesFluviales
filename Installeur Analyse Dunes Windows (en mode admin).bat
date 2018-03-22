@@ -8,7 +8,7 @@ SET MATPLOTLIB_PATH=%PACKAGE_PATH%matplotlib-2.2.2-cp36-cp36m-win_amd64.whl
 SET PILLOW_PATH=%PACKAGE_PATH%Pillow-5.0.0-cp36-cp36m-win_amd64.whl
 :: %~dp0 fait référence au dossier courant
 :: si on trouve pas l'installateur de python, on le signale à l'utilisateur et on quitte le programme
-SET PYTHON_PATH=%~dp0python-3.6.4-amd64.exe
+SET PYTHON_INSTALL=%PACKAGE_PATH%python-3.6.4-amd64.exe
 :: Ainsi on ne défini pas la variable
 SET MANQUE_WHEEL = 
 
@@ -19,8 +19,10 @@ IF EXIST "C:\Python36\python.exe" GOTO :Install_Package
 echo pour installer Python il faut que le ficier python-3.6.4-amd64.exe (executable installer) soit dans le meme repertoire que cet installateur
 echo Python 3.6 n'est pas encore installe, faisons le maintenant
 
-IF NOT EXIST %PYTHON_PATH% (
-	echo Le fichier d'installation n'est pas trouve, il peut-etre telecharge sur https://www.python.org/ (version 3.6.4 ou plus)
+echo %PYTHON_INSTALL%
+
+IF NOT EXIST %PYTHON_INSTALL% (
+	echo Le fichier d'installation n'est pas trouve, il peut-etre telecharge sur https://www.python.org/ - version 3.6.4
 	GOTO :Sortie
 )
 

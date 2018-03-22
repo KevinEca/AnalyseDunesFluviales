@@ -12,7 +12,8 @@ SET PYTHON_PATH=%~dp0python-3.6.4-amd64.exe
 :: Ainsi on ne défini pas la variable
 SET MANQUE_WHEEL = 
 
-:START_POINT
+:Demarrage
+:: On regarde si Python 3.6.X a été installé
 IF EXIST "C:\Python36\python.exe" GOTO :Install_Package
 
 echo pour installer Python il faut que le ficier python-3.6.4-amd64.exe (executable installer) soit dans le meme repertoire que cet installateur
@@ -20,12 +21,12 @@ echo Python 3.6 n'est pas encore installe, faisons le maintenant
 
 IF NOT EXIST %PYTHON_PATH% (
 	echo Le fichier d'installation n'est pas trouve, il peut-etre telecharge sur https://www.python.org/ (version 3.6.4 ou plus)
-	GOTO :Install_Package
+	GOTO :Sortie
 )
 
 echo Le repertoire d'installation doit etre "C:\Python36"
 python-3.6.4-amd64.exe
-GOTO :START_POINT
+GOTO :Demarrage
 
 :Install_Package
 echo Version de python installe
@@ -33,7 +34,8 @@ python --version
 echo ------ Installons maintenant les packages -------
 echo Les packages sont numpy 1.14.2, scipy 1.0.0, matplotlib 2.2.2 et Pillow 5.0.0
 
-set /p ChoixInstallation="Voulez-vous faire une installation en ligne (n'utilise pas les packages wheel mis en local) ? (o/n)"
+set /p ChoixInstallation="Voulez-vous faire une installation en ligne (n'utilise pas les packages wheel telecharges au prealable) ? (o/n)"
+
 IF %ChoixInstallation% == o (GOTO :Install_Package_Online) ELSE (GOTO :Install_Package_Offline)
 
 :Install_Package_Online
@@ -70,18 +72,18 @@ IF NOT EXIST %PILLOW_PATH% (
 )
 IF DEFINED %MANQUE_WHEEL% (
 	echo Il manque au moins une librairie au format wheel (whl)
-	GOTO :SORTIE
+	GOTO :Sortie
 )
 	
-echo 1. Mise a jour pip (web)
-%PIP_INSTALL% --upgrade pip
-echo 2. Installation Numpy (wheel)
+::echo 0. Mise a jour pip (web)
+::%PIP_INSTALL% --upgrade pip
+echo 1. Installation Numpy (wheel)
 %PIP_INSTALL% %NUMPY_PATH%
-echo 3. Installation Scipy (wheel)
+echo 2. Installation Scipy (wheel)
 %PIP_INSTALL% %SCIPY_PATH%
-echo 4. Installation Matplotlib (wheel)
+echo 3. Installation Matplotlib (wheel)
 %PIP_INSTALL% %MATPLOTLIB_PATH%
-echo 5. Installation Pillow (wheel)
+echo 4. Installation Pillow (wheel)
 %PIP_INSTALL% %PILLOW_PATH%
 GOTO :Fin_Install
 
@@ -90,5 +92,5 @@ echo ------ Tous les packages sont installes -------
 echo *********Le programme d'analyse de dunes peux maintenant s'executer*********
 
 :: EXIT est un nom système de la commande de sortie
-:SORTIE
+:Sortie
 set /p DUMMY=Press ENTRER pour quitter...

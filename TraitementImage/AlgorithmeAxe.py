@@ -16,7 +16,7 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, LesAxes = None, ImageAff
     PointB = LesAxes.InfosAxe(NumeroAxe).getPointArrive().getCoordonnees()
     
     # Si le courant va de droite à gauche (vers la gauche), le point A est celui le plus à droite des 2 (à verticalité égale, il est le plus en bas)
-    if(MonImage.getSensCourant() == True):
+    if(MonImage.getSensCourantGauche() == True):
         if(PointA[0] < PointB[0] or (PointA[0] == PointB[0] and PointA[1] > PointB[1])):
             PointA = PointB
             PointB = LesAxes.InfosAxe(NumeroAxe).getPointDepart().getCoordonnees()
@@ -67,7 +67,7 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, LesAxes = None, ImageAff
         
         # Si le sens du courant est de la droite vers la gauche, le pixel de départ est alors plus à droite que celui d'arrivé (Depart[0] > Arive[0])
         # pour la boucle for on effectue une décrémentation
-        if(MonImage.getSensCourant() == True):
+        if(MonImage.getSensCourantGauche() == True):
             DirectionBoucle = -1
             
         for X in range (PositionXDepart, PositionXArrive, DirectionBoucle):
@@ -110,7 +110,7 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, LesAxes = None, ImageAff
         
         # Si le sens du courant est de la droite vers la gauche, c'est que horizontalement les pixels choisi aurant des valeurs de + en + faible
         # pour tester la position horizon du pixel à prendre, on effectue une décrémentation
-        if(MonImage.getSensCourant() == True):
+        if(MonImage.getSensCourantGauche() == True):
             DirectionIncremet = -1
             
         for Y in range (PositionYDepart, PositionYArrive, DirectionBoucle):

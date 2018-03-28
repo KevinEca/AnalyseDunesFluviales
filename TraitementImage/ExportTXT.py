@@ -1,7 +1,7 @@
 ﻿import datetime
 from tkinter import filedialog, messagebox
 
-def ExportResultatsDunesAxe(TableauInfoDunes = [0,0,0,0,0,0,0], Image = None, NumeroAxe = 0, CoordonneesAxe = None, DonneesBilanAxe = [0,0,0,0]):
+def ExportResultatsDunesAxe(TableauInfoDunes = [0,0,0,0,0,0,0], Image = None, NumeroAxe = 0, CoordonneesAxe = None, DonneesBilanAxe = [0,0,0,0], DetectionDune = 10):
     NombreDeDunesTotal = len(TableauInfoDunes)
     j = 0 # Indice de la dune que l'on lit dans le tableau
         
@@ -20,9 +20,9 @@ def ExportResultatsDunesAxe(TableauInfoDunes = [0,0,0,0,0,0,0], Image = None, Nu
             f = filedialog.asksaveasfilename(defaultextension='.txt',filetypes = (("Texte","*.txt"),("CSV","*.csv*")))
             if f:
                 with open(f, "w") as fic:
-                    print(f"""Traitement analyse dunes de l'image " {Image.getNomImage()} " fait le {datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
-Altitude minimum = {Image.getAltitudeMin()} Résolution altitude = {Image.getResolutionAltitude()}
-Numéro axe choisi {NumeroAxe} constitué des pixels aux extrémités {CoordonneesAxe}
+                    EnteteFichierTxt(fic, Image, DetectionDune)
+                    # Reste de l'entête du fichier
+                    print(f"""Numéro axe choisi {NumeroAxe} constitué des pixels aux extrémités {CoordonneesAxe}
 Nombre de dunes = {DonneesBilanAxe[1]} | Longeur d'onde moyenne = {DonneesBilanAxe[2]}m | Hauteur moyenne {DonneesBilanAxe[3]}cm
 IdDune;Longeur d'onde(m);Hauteur(cm);AltitudeCreux1(m);AltitudePic(m);AltitudeCreux2(m)""", file = fic)
                         
@@ -37,7 +37,7 @@ IdDune;Longeur d'onde(m);Hauteur(cm);AltitudeCreux1(m);AltitudePic(m);AltitudeCr
     else:
         messagebox.showerror("Erreur", "Aucune dune n'a été trouvé")
 
-def ExportResultatsDunesAxes(TableauInfoDunes = [0,0,0,0,0,0], Image = None, Axes = None, DonneesBilanAxe = [0,0,0,0]):
+def ExportResultatsDunesAxes(TableauInfoDunes = [0,0,0,0,0,0], Image = None, Axes = None, DonneesBilanAxe = [0,0,0,0], DetectionDune = 10):
     NombreDeDunesTotal = len(TableauInfoDunes)
     j = 0 # Indice de la dune que l'on lit dans le tableau
         
@@ -47,9 +47,7 @@ def ExportResultatsDunesAxes(TableauInfoDunes = [0,0,0,0,0,0], Image = None, Axe
         f = filedialog.asksaveasfilename(defaultextension='.txt',filetypes = (("Texte","*.txt"),("CSV","*.csv*")))
         if f:
             with open(f, "w") as fic:
-                # Entête du fichier
-                print(f"""Traitement analyse dunes de l'image " {Image.getNomImage()} " fait le {datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
-Altitude minimum = {Image.getAltitudeMin()} Résolution altitude = {Image.getResolutionAltitude()}""", file = fic)
+                EnteteFichierTxt(fic, Image, DetectionDune)
             
                 # On affiche les informations générales pour chacun des axes
                 NombreAxe = len(DonneesBilanAxe)
@@ -66,7 +64,7 @@ Nombre de dunes = {DonneesBilanAxe[i][1]} | Longeur d'onde moyenne = {DonneesBil
     else:
         messagebox.showerror("Erreur", "Aucune dune n'a été trouvé")          
                 
-def ExportResultatsDunes(TableauInfoDunes = [0,0,0,0,0], Image = None, DonneesBilanImage = [0,0,0]):
+def ExportResultatsDunes(TableauInfoDunes = [0,0,0,0,0], Image = None, DonneesBilanImage = [0,0,0], DetectionDune = 10):
     NombreDeDunesTotal = len(TableauInfoDunes)
     j = 0 # Indice de la dune que l'on lit dans le tableau
         
@@ -74,10 +72,9 @@ def ExportResultatsDunes(TableauInfoDunes = [0,0,0,0,0], Image = None, DonneesBi
         f = filedialog.asksaveasfilename(defaultextension='.txt',filetypes = (("Texte","*.txt"),("CSV","*.csv*")))
         if f:
             with open(f, "w") as fic:
-                # Entête du fichier
-                print(f"""Traitement analyse dunes de l'image " {Image.getNomImage()} " fait le {datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
-Altitude minimum = {Image.getAltitudeMin()} Résolution altitude = {Image.getResolutionAltitude()}
-Analyse de l'image complète : nombre de dunes {DonneesBilanImage[0]} | Longueur d'onde moyenne = {DonneesBilanImage[1]} | Hauteur moyenne = {DonneesBilanImage[2]}
+                EnteteFichierTxt(fic, Image, DetectionDune)
+                # Reste de l'entête du fichier
+                print(f"""Analyse de l'image complète : nombre de dunes {DonneesBilanImage[0]} | Longueur d'onde moyenne = {DonneesBilanImage[1]} | Hauteur moyenne = {DonneesBilanImage[2]}
 IdDune;Longeur d'onde(m);Hauteur(cm);AltitudeCreux1(m);AltitudePic(m);AltitudeCreux2(m)""", file = fic)
 
                 while(j < NombreDeDunesTotal):
@@ -85,3 +82,16 @@ IdDune;Longeur d'onde(m);Hauteur(cm);AltitudeCreux1(m);AltitudePic(m);AltitudeCr
                     j += 1
     else:
         messagebox.showerror("Erreur", "Aucune dune n'a été trouvé")
+        
+def EnteteFichierTxt(FichierTexteOuvert, Image = None, DetectionDune = 10):
+    if Image.getSensCourantGauche() == True:
+        SensCourant = "gauche"
+    else:
+        SensCourant = "droite"
+        
+    print(f"""Traitement analyse dunes de l'image " {Image.getNomImage()} " fait le {datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")}
+Altitude minimum = {Image.getAltitudeMin()} Résolution altitude = {Image.getResolutionAltitude()}
+Detection des dunes (petites) dès {DetectionDune}m
+Le sens du courant choisi est vers la {SensCourant}""", file = FichierTexteOuvert)
+    
+    

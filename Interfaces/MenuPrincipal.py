@@ -108,11 +108,21 @@ class MenuPrincipal(Frame):
         path = filedialog.askopenfilename(title="Ouvrir une image",filetypes=[('tif','.tif'),('jpg','.jpg'),('bmp','.bmp'),('all files','.*')]) 
         # On vérifie que l'image est apte au traitements
         if path != "" :
-            self.MonImage.AttribuerImage(path)
-            # On affiche l'image dans l'interface
-            self.AffichageImage()
-            # On rend possible le bouton pour le traitement sur l'image
-            self.BoutonTraitementImage['state'] = 'normal'
+            ImageValide = self.MonImage.AttribuerImage(path)
+            
+            if(ImageValide):
+                # On affiche l'image dans l'interface
+                self.AffichageImage()
+                # On rend possible le bouton pour le traitement sur l'image
+                self.BoutonTraitementImage['state'] = 'normal'
+            else:
+                messagebox.showerror("Erreur", """L'image ouverte en paramètre ne respecte pas la convention de nommage pour utiliser le programme.
+Les niveaux d'altitude minimum et maximum (m) doivent Ãªtre indiqués dans le nom de l'image séparé par le caractère '_'.        
+Exemples de noms valides :
+A_5,284_9,21.tif
+Exemple_-3,1_-8,867.tif
+Projet_de_PRD_4,26_-8,141.tif""")
+            
     
     def AffichageImage(self):
         
@@ -159,9 +169,9 @@ Voulez-vous poursuivre ?""")
     def ChoisirSensCourant(self):
         Choix = self.ChoixSensCourant.get()
         if (Choix == "Vers la gauche"):
-            self.MonImage.setSensCourant(True)
+            self.MonImage.setSensCourantGauche(True)
         else:
-            self.MonImage.setSensCourant(False)
+            self.MonImage.setSensCourantGauche(False)
             
     def AjoutPointAffichage(self, PositionX, PositionY):
         self.DessinPoint.append(self.Canevas.create_oval(PositionX-1, PositionY-1, PositionX+1, PositionY+1, fill="red"))
@@ -183,19 +193,14 @@ Voulez-vous poursuivre ?""")
             PositionYPoint = event.y
             #print("X = " + str(PositionXPoint) + " Y = " + str(PositionYPoint))
             
-            # Si le point que l'on s'apprête a ajouter est le deuxième d'un axe, et qu'il se trouve au même endroit que le premier
-            # Alors on empêche la création de ce point
-            if (self.LesAxes.NombreAxes() > 0 and not self.LesAxes.DernierAxeComplet()):
-                CoordonneePremierPoint = self.LesAxes.PositionDernierPointDepart();
-                if(CoordonneePremierPoint[0] == PositionXPoint and CoordonneePremierPoint[1] == PositionYPoint):
-                    messagebox.showerror("Erreur", """Les 2 points de l'axe sont placés au même endroit.
+            # on ajoute le point dans la liste des axe (GestionAxes)
+            if not self.LesAxes.AjouterPoint(PositionXPoint, PositionYPoint):
+                messagebox.showerror("Erreur", """Les 2 points de l'axe sont placés au même endroit.
 Impossible de créer un axe dont la longueur est nulle.""")
-                    return
+                return
             
             # On rajoute le point sur le canevas
             self.AjoutPointAffichage(PositionXPoint, PositionYPoint)
-            # on garde en mémoire les coordonnées du points
-            self.LesAxes.AjouterPoint(PositionXPoint, PositionYPoint)
             # On permet de supprimer le dernier élément
             self.BoutonSupprimerDernierElement['state'] = 'normal'
             

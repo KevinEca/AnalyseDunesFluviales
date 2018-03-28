@@ -1,5 +1,6 @@
 from PIL import Image
 from tkinter import messagebox
+from os.path import isfile
 
 class ImageDune():
     
@@ -13,12 +14,23 @@ class ImageDune():
         self.CourantVersLaGauche = True
             
     def AttribuerImage(self, Chemin):
+        # par défaut on suppose que l'image ne correspond pas aux contraintes nécessaires pour effectuer un traitement de l'image
+        ImageValide = False
+        
         self.CheminImage = Chemin # chemin indiquant où se trouve l'image sélectionnée
     
-        # On vérifie si l'image respecte la convention de nommage
-        if self.VerifierImage() == True :
+        #print(isfile(Chemin))
+        #print(self.VerifierImage())
+        # On vérfie que l'image respecte la convention de nommage et qu'elle existe à l'emplacement indiqué
+        ImageValide = self.VerifierImage() and isfile(Chemin)
+        
+        if ImageValide:
             # On Convertie l'image en noir et blanc 8 bits et on la sauvegarde en mémoire
             self.Image = Image.open(self.CheminImage).convert('L')
+        else:
+            self.CheminImage = ""
+        
+        return ImageValide
             
     def getCheminImage(self):
         return self.CheminImage
@@ -44,10 +56,10 @@ class ImageDune():
     def getResolutionAltitude(self):
         return self.ResolutionAltitude
     
-    def setSensCourant(self, CourantVersGauche):
+    def setSensCourantGauche(self, CourantVersGauche):
         self.CourantVersLaGauche = CourantVersGauche
     
-    def getSensCourant(self):
+    def getSensCourantGauche(self):
         return self.CourantVersLaGauche
     
     def VerifierImage(self):
@@ -81,12 +93,7 @@ class ImageDune():
             ImageValide = True
                 
         except (ValueError, IndexError) :
-            messagebox.showerror("Erreur", """L'image ouverte en paramètre ne respecte pas la convention de nommage pour utiliser le programme.
-Les niveaux d'altitude minimum et maximum (m) doivent Ãªtre indiqués dans le nom de l'image séparé par le caractère '_'.        
-Exemples de noms valides :
-A_5,284_9,21.tif
-Exemple_-3,1_-8,867.tif
-Projet_de_PRD_4,26_-8,141.tif""")
+            ImageValide = False
             
         return ImageValide
     

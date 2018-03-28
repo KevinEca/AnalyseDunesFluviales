@@ -83,11 +83,11 @@ class ResultatsAxes(Frame):
             self.Canevas.create_line(self.LesAxes.CoordonneesAxe(i), fill=ListeCouleurs[i])
 
     def ExportTxt(self):
-        ExportTXT.ExportResultatsDunesAxes(self.TableauAnalyseImageAxe, self.MonImage, self.LesAxes, self.BilanDunesAxe)
+        ExportTXT.ExportResultatsDunesAxes(self.TableauAnalyseImageAxe, self.MonImage, self.LesAxes, self.BilanDunesAxe, self.DetectionDune)
     
     def ExportTxtAxe(self):
         AxeChoisi = int(self.NumeroAxeChoisi.get())
-        ExportTXT.ExportResultatsDunesAxe(self.TableauAnalyseImageAxe, self.MonImage, AxeChoisi, self.LesAxes.InfosAxe(AxeChoisi).getCoordonneesAxe(), self.BilanDunesAxe[AxeChoisi])
+        ExportTXT.ExportResultatsDunesAxe(self.TableauAnalyseImageAxe, self.MonImage, AxeChoisi, self.LesAxes.InfosAxe(AxeChoisi).getCoordonneesAxe(), self.BilanDunesAxe[AxeChoisi], self.DetectionDune)
     
     def VisualiserProfil(self):
         AxeChoisi = int(self.NumeroAxeChoisi.get())

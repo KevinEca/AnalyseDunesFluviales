@@ -13,12 +13,20 @@ class GestionAxes():
         return self.ListeAxes[NumeroAxe]
             
     def AjouterPoint(self, Xpoint, Ypoint):
+        PointAjoute = True
         # Si aucun axe n'est créé ou que le dernier axe créé est complet (possède son point d'arrivé), alors on créé un nouvel axe et on lui met son point de départ
         if(self.NombreAxes() < 1  or self.ListeAxes[self.NombreAxes() - 1].getPointArrive() != None):
             self.ListeAxes.append(Axe.Axe(Xpoint, Ypoint))
         else: # Sinon, c'est que le point que l'on va rajouter va correspondre au point d'arrivé du dernier axe de la liste (celui qui n'est pas complété)
-            self.ListeAxes[self.NombreAxes() - 1].AjoutPointArrive(Xpoint, Ypoint)
-        
+            PointDepartAxe = self.PositionDernierPointDepart()
+            # Si le point que l'on s'apprête a ajouter est le deuxième d'un axe, et qu'il se trouve au même endroit que le premier
+            # Alors on empêche la création de ce point
+            if PointDepartAxe[0] == Xpoint and PointDepartAxe[1] == Ypoint:
+                PointAjoute = False
+            else:
+                self.ListeAxes[self.NombreAxes() - 1].AjoutPointArrive(Xpoint, Ypoint)
+        return PointAjoute
+    
     # cette méthode est utilisé pour connaître les coordonnees du dernier point que l'utilisateur a placé pour effectuer une duplication d'axe (donc forcement un axe qui ne possède pas de point d'arrivée)
     def PositionDernierPointDepart(self):
         return self.ListeAxes[self.NombreAxes() - 1].getCoordonneesPointDepart();
@@ -37,8 +45,12 @@ class GestionAxes():
     
     # retourne les coordonnees de l'axe choisi sous la forme
     # XDepart, YDepart, XArrive, YArrive
+    # Si le numéro d'axe indiqué ne correspond pas à la liste, le dernier élément de la liste sera prit
     def CoordonneesAxe(self, NumeroAxe):
-        return self.ListeAxes[NumeroAxe].getCoordonneesAxe()
+        if not NumeroAxe > self.NombreAxes() and NumeroAxe >= 0:
+            return self.ListeAxes[NumeroAxe].getCoordonneesAxe()
+        else:
+            return self.CoordonneesDernierAxe()
             
     def CoordonneesDernierAxe(self):
         return self.CoordonneesAxe(self.NombreAxes() - 1)

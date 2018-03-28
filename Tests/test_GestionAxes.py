@@ -1,7 +1,7 @@
 ﻿import unittest
 from TraitementImage import GestionAxes
 
-class TestsGestionAxes(unittest.TestCase):
+class test_GestionAxes(unittest.TestCase):
     
     # L'image existe
     def testListeVide(self):
@@ -90,7 +90,7 @@ class TestsGestionAxes(unittest.TestCase):
         if(Vecteur[0] == 20 and Vecteur[1] == 20):
             Correct = True
         self.assertEqual(Correct, True, "Echec le calcul du vecteur 'est pas correct")
-        
+
 # Ceci lance le test si on exécute le script directement.
 if __name__ == '__main__':
     unittest.main()

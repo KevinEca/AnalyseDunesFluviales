@@ -9,7 +9,7 @@ NomImageEchec = "Echec test.tif"
 NomImageIncomplet = "Exemple2_5,548.tif"
 NomImageExistePas = "Exemple3_5,548_11,20.tif"
 
-class TestsImageDune(unittest.TestCase):
+class test_ImageDune(unittest.TestCase):
     
     # L'image existe
     def testImageDuneValide1(self):
@@ -118,3 +118,7 @@ class TestsImageDune(unittest.TestCase):
         MonImage.AttribuerImage(NomImage1)
         MonImage.setSensCourantGauche(False)
         self.assertEqual(MonImage.getSensCourantGauche(), False, "Echec - le sens du courant doit être modifié (vers la droite)")
+
+# Ceci lance le test si on exécute le script directement.
+if __name__ == '__main__':
+    unittest.main()

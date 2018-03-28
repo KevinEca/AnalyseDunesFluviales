@@ -16,19 +16,17 @@ class ImageDune():
     def AttribuerImage(self, Chemin):
         # par défaut on suppose que l'image ne correspond pas aux contraintes nécessaires pour effectuer un traitement de l'image
         ImageValide = False
-        
-        self.CheminImage = Chemin # chemin indiquant où se trouve l'image sélectionnée
     
         #print(isfile(Chemin))
         #print(self.VerifierImage())
         # On vérfie que l'image respecte la convention de nommage et qu'elle existe à l'emplacement indiqué
-        ImageValide = self.VerifierImage() and isfile(Chemin)
-        
-        if ImageValide:
+        if self.VerifierImage(Chemin) and isfile(Chemin):
+            # On modifie le chemin indiquant où se trouve l'image sélectionnée
+            self.CheminImage = Chemin 
             # On Convertie l'image en noir et blanc 8 bits et on la sauvegarde en mémoire
             self.Image = Image.open(self.CheminImage).convert('L')
-        else:
-            self.CheminImage = ""
+            # On signale que la nouvelle image choisie est valide
+            ImageValide = True        
         
         return ImageValide
             
@@ -62,7 +60,7 @@ class ImageDune():
     def getSensCourantGauche(self):
         return self.CourantVersLaGauche
     
-    def VerifierImage(self):
+    def VerifierImage(self, Chemin):
         # par défaut on suppose que l'image ne correspond pas aux contraintes nécessaires pour effectuer un traitement de l'image
         ImageValide = False
     
@@ -75,8 +73,8 @@ class ImageDune():
             # Altitude minimum : on prend le dernier morceau, 
             #                    on le coupe par le caractère '.' pour enlever le '.tiff'
             #                    on en prend le premier morceau "5,029" et on remplace la ',' par un '.' → conversion en float
-            
-            self.NomImage = (self.CheminImage.split("/"))[-1]
+
+            self.NomImage = (Chemin.split("/"))[-1]
             DecoupeNomImage = self.NomImage.split("_")
             self.AltitudeMin = float(DecoupeNomImage[-2].replace(',', '.'))
             AltitudeMaximum = float((DecoupeNomImage[-1].split("."))[0].replace(',', '.'))
@@ -88,7 +86,7 @@ class ImageDune():
             #print("Altitude Max = " + str(AltitudeMaximum))
             #print("Altitude Min = " + str(self.AltitudeMin))
             #print("Resolution image = " + str(self.ResolutionAltitude))
-            
+
             # Si nous somme arrivé jusque ici, c'est que l'image est valide
             ImageValide = True
                 

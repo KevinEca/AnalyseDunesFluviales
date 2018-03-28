@@ -15,6 +15,3 @@ class Point():
             
     def getCoordonnees(self):
         return self.CoordonneeX, self.CoordonneeY
-    
-        
-        

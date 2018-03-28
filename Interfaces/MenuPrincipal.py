@@ -117,7 +117,7 @@ class MenuPrincipal(Frame):
                 self.BoutonTraitementImage['state'] = 'normal'
             else:
                 messagebox.showerror("Erreur", """L'image ouverte en paramètre ne respecte pas la convention de nommage pour utiliser le programme.
-Les niveaux d'altitude minimum et maximum (m) doivent Ãªtre indiqués dans le nom de l'image séparé par le caractère '_'.        
+Les niveaux d'altitude minimum et maximum (m) doivent être indiqués dans le nom de l'image séparé par le caractère '_'.        
 Exemples de noms valides :
 A_5,284_9,21.tif
 Exemple_-3,1_-8,867.tif

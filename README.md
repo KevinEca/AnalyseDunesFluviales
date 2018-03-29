@@ -36,3 +36,9 @@ pour installer pyqt5, il faut passe par l'inviter de commande avec "pip install 
 Les installateurs à la racine de ce projet permettent d'installer python + les librairies en hors ligne, néanmoins comme les librairies sont lourdes, seules les scripts sont ici
 Les fichiers des librairie (.whl) sont disponible sur le site pypi, comme par exemple avec pillow
 https://pypi.python.org/pypi
+
+Les différents tests unitaires sont dans le dossier "Tests" de ce même dépôt, il contient 4 fichiers Python contenant une liste de tests qui vont tester la fiabilité des classes "Point", "Axe", "GestionAxes" et "ImageDune".
+Bien évidemment, la classe "GestionAxes" utilisant la classe "Axe" qui elle même appelle les méthodes de "Point", il faut commencer par vérifier la classe "Point" puis "Axe" avant de lancer les tests sur "GestionAxes".
+Les tests unitaires sont faits avec unittest, pour les exécuter il suffit par exemple d'ouvrir le projet sous son IDE, puis de demander l'exécution des fichiers "test_Point.py", "test_Axe.py", "test_GestionAxes.py" ou "test_ImageDune.py" pour effectuer les tests sur leur classe associée, l'ensemble des tests de la classe se lancerons, il suffira juste de déterminer lequels sont faux pour ajuster ses classes pour qu'ils respectent les tests.
+Par exemple avec l'IDE eclipse (+ plugin PyDev), il suffit de lancer les classes de tests en tant que "python uni-test".
+Il est aussi possible depuis un invite de commande / terminal d'exécuter l'ensemble des fichier test dun coup. Pour ce faire déplacer vous jusqu'au dossier "Tests" du projet, puis lancer la commande "python -m unittest discover"

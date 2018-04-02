@@ -33,6 +33,3 @@ class Axe():
     
     def VecteurAxe(self):
         return self.VecteurXaxe(), self.VecteurYaxe()
-        
-        
-        

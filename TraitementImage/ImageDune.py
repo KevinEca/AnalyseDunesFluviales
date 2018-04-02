@@ -1,5 +1,4 @@
 from PIL import Image
-from tkinter import messagebox
 from os.path import isfile
 
 class ImageDune():

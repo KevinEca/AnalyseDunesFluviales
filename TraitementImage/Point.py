@@ -11,7 +11,7 @@ class Point():
     def getYpoint(self):
         return self.CoordonneeY
     
-    # Modifier les coordonnées n'est pas autorisé, on supprime le point et on en créé un autre
-            
     def getCoordonnees(self):
         return self.CoordonneeX, self.CoordonneeY
+    
+    # Modifier les coordonnées n'est pas autorisé, on supprime le point et on en créé un autre

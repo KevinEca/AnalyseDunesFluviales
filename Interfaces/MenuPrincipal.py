@@ -218,7 +218,7 @@ Impossible de créer un axe dont la longueur est nulle.""")
                 if(self.LesAxes.NombreAxes() > 1):
                     self.Canevas.itemconfig(self.DessinLigne[self.LesAxes.NombreAxes() - 2], fill = "blue")
     
-    def DupliquerAxe(self):        
+    def DupliquerAxe(self):             
         if(self.LesAxes.NombreAxes() < 1):
             messagebox.showerror("Erreur", "Aucun axe n'est encore tracé.")
         # S'il y a un point non utilisé pour un tracé (le dernier axe n'est pas complet)

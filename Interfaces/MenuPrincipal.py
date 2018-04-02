@@ -45,20 +45,20 @@ class MenuPrincipal(Frame):
         
         Label(FrameInfoImage, text="Seuil détection des petites dunes").grid(row=0, column=0)
         # L'intervalle de choix de seuil de détection des petites dunes est un entier entre 0 et 100 (par défaut 10)
-        self.SeuilDetectionDune = Spinbox(FrameInfoImage, from_=0, to=100, width = 10)
-        self.SeuilDetectionDune.grid(row=0, column=1)
-        self.SeuilDetectionDune.delete(0)    # On enlève la valeur par défaut dans la Spinbox (qui est de base la valeur minimum)
-        self.SeuilDetectionDune.insert(0, "10")  # On place maintenant la valeur 10 comme valeur par défaut
-        # pour récupérer la valeur de la Spinbox, il suffit de faire SeuilDetectionDune.get()
+        self.SeuilDetectionPetiteDune = Spinbox(FrameInfoImage, from_=0, to=100, width = 10)
+        self.SeuilDetectionPetiteDune.grid(row=0, column=1)
+        self.SeuilDetectionPetiteDune.delete(0)    # On enlève la valeur par défaut dans la Spinbox (qui est de base la valeur minimum)
+        self.SeuilDetectionPetiteDune.insert(0, "10")  # On place maintenant la valeur 10 comme valeur par défaut
+        # pour récupérer la valeur de la Spinbox, il suffit de faire SeuilDetectionPetiteDune.get()
         Label(FrameInfoImage, text="cm").grid(row=0, column=2)
         
         Label(FrameInfoImage, text="Seuil détection des grandes dunes").grid(row=1, column=0)
         # L'intervalle de choix de seuil de détection des grandes dunes est un entier entre 0 et 100 (par défaut 50)
-        self.SeuilDetectionDune = Spinbox(FrameInfoImage, from_=0, to=100, width = 10)
-        self.SeuilDetectionDune.grid(row=1, column=1)
-        self.SeuilDetectionDune.delete(0)    # On enlève la valeur par défaut dans la Spinbox (qui est de base la valeur minimum)
-        self.SeuilDetectionDune.insert(0, "50")  # On place maintenant la valeur 50 comme valeur par défaut
-        # pour récupérer la valeur de la Spinbox, il suffit de faire SeuilDetectionDune.get()
+        self.SeuilDetectionGrosseDune = Spinbox(FrameInfoImage, from_=0, to=100, width = 10)
+        self.SeuilDetectionGrosseDune.grid(row=1, column=1)
+        self.SeuilDetectionGrosseDune.delete(0)    # On enlève la valeur par défaut dans la Spinbox (qui est de base la valeur minimum)
+        self.SeuilDetectionGrosseDune.insert(0, "50")  # On place maintenant la valeur 50 comme valeur par défaut
+        # pour récupérer la valeur de la Spinbox, il suffit de faire SeuilDetectionGrosseDune.get()
         Label(FrameInfoImage, text="cm").grid(row=1, column=2)
         
         Label(FrameInfoImage, text="Sens du courant").grid(row=2, column=0)
@@ -314,9 +314,9 @@ puis cliquer sur ce même bouton""")
             
         fenTraitementAxes = Toplevel()
         fenTraitementAxes.title("Résultats issus des axes - Analyse dunes 2018")
-        ResultatsAxes.ResultatsAxes(fenTraitementAxes, self.MonImage, self.MiniatureImage, self.SeuilDetectionDune.get(), self.LesAxes)
+        ResultatsAxes.ResultatsAxes(fenTraitementAxes, self.MonImage, self.MiniatureImage, self.SeuilDetectionPetiteDune.get(), self.LesAxes)
 
     def TraitementImage(self):
         fenTraitementImage = Toplevel()
         fenTraitementImage.title("Résultats image complète - Analyse dunes 2018")
-        ResultatsImage.ResultatsImage(fenTraitementImage, self.MonImage, self.MiniatureImage, self.SeuilDetectionDune.get())
+        ResultatsImage.ResultatsImage(fenTraitementImage, self.MonImage, self.MiniatureImage, self.SeuilDetectionPetiteDune.get())
